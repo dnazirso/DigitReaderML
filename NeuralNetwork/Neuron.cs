@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DigitReaderML
+namespace NeuralNetwork
 {
     public static class Neuron
     {

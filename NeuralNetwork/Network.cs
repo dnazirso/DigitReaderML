@@ -2,47 +2,49 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DigitReaderML
+namespace NeuralNetwork
 {
-    class NetWork
+    public class Network
     {
         public List<int> Sizes { get; set; }
         public int NumberOfLayer { get; set; }
-        public List<List<float>> Biases { get; set; }
-        public float[,] BiasesArr { get; set; }
-        public List<List<float>> Weights { get; set; }
-        public NetWork(List<int> Sizes)
+        public List<float[,]> Biases { get; set; }
+        public List<float[,]> Weights { get; set; }
+        public Network(List<int> Sizes)
         {
 
             this.Sizes = Sizes;
             NumberOfLayer = Sizes.Count;
+
             Random rbiases = new Random();
             Random rweights = new Random();
 
             foreach (var y in Sizes.Skip(1))
             {
-                var list = new List<float>();
+                var biases = new float[y, 1];
                 for (var i = 0; i < y; i++)
                 {
-                    list.Add((float)rbiases.NextDouble());
+                    biases[i, 0] = (float)rbiases.NextDouble();
                 }
-                Biases.Add(list);
+                Biases.Add(biases);
             }
 
             var ziped = Sizes.SkipLast(1).Zip(Sizes.Skip(1));
+
+            // x => number of neuron in previous layer
+            // y => number of neuron in actual layer
             foreach (var (x, y) in ziped)
             {
+                var layer = new float[y, x];
                 for (var i = 0; i < y; i++)
                 {
-                    var list = new List<float>();
                     for (var j = 0; j < x; j++)
                     {
-                        list.Add((float)rweights.NextDouble());
+                        layer[i, j] = (float)rweights.NextDouble();
                     }
-                    Biases.Add(list);
+                    Weights.Add(layer);
                 }
             }
-
         }
 
         public float Feedfoward(float a)

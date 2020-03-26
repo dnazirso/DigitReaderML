@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Algebra", "Algebra\Algebra.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgebraTests", "AlgebraTest\AlgebraTests.csproj", "{4AB0A15C-2E05-4A77-BCA6-858CD4F301EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuralNetwork", "NeuralNetwork\NeuralNetwork.csproj", "{5BB16A23-62C2-4918-91F7-8FB3BB016419}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{4AB0A15C-2E05-4A77-BCA6-858CD4F301EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AB0A15C-2E05-4A77-BCA6-858CD4F301EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AB0A15C-2E05-4A77-BCA6-858CD4F301EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BB16A23-62C2-4918-91F7-8FB3BB016419}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BB16A23-62C2-4918-91F7-8FB3BB016419}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BB16A23-62C2-4918-91F7-8FB3BB016419}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BB16A23-62C2-4918-91F7-8FB3BB016419}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
