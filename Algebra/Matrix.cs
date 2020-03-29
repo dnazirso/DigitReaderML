@@ -14,9 +14,9 @@
 
             var At = new float[dimAj, dimAi];
 
-            for (var i = 0; i < A.Length; i++)
+            for (var i = 0; i < A.GetLength(0); i++)
             {
-                for (var j = 0; j < A.GetLength(0); j++)
+                for (var j = 0; j < A.GetLength(1); j++)
                 {
                     At[i, j] = A[j, i];
                 }

@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigitReaderML", "DigitReaderML\DigitReaderML.csproj", "{F544D225-6EF2-46FB-A147-0CA2CA547802}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Algebra", "Algebra\Algebra.csproj", "{463633B0-CFF2-41F1-8645-0A0C1C6D57DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Algebra", "Algebra\Algebra.csproj", "{463633B0-CFF2-41F1-8645-0A0C1C6D57DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgebraTests", "AlgebraTest\AlgebraTests.csproj", "{4AB0A15C-2E05-4A77-BCA6-858CD4F301EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlgebraTests", "AlgebraTest\AlgebraTests.csproj", "{4AB0A15C-2E05-4A77-BCA6-858CD4F301EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuralNetwork", "NeuralNetwork\NeuralNetwork.csproj", "{5BB16A23-62C2-4918-91F7-8FB3BB016419}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuralNetwork", "NeuralNetwork\NeuralNetwork.csproj", "{5BB16A23-62C2-4918-91F7-8FB3BB016419}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

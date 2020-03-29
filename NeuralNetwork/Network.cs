@@ -19,6 +19,7 @@ namespace NeuralNetwork
             Random rbiases = new Random();
             Random rweights = new Random();
 
+            // Initialize Biases
             foreach (var y in Sizes.Skip(1))
             {
                 var biases = new float[y, 1];
@@ -31,10 +32,11 @@ namespace NeuralNetwork
 
             var ziped = Sizes.SkipLast(1).Zip(Sizes.Skip(1));
 
-            // x => number of neuron in previous layer
-            // y => number of neuron in actual layer
+            // Initialize Weights
             foreach (var (x, y) in ziped)
             {
+                // x => number of neuron in previous layer
+                // y => number of neuron in actual layer
                 var layer = new float[y, x];
                 for (var i = 0; i < y; i++)
                 {
@@ -47,11 +49,16 @@ namespace NeuralNetwork
             }
         }
 
-        public float Feedfoward(float a)
+        /// <summary>
+        /// Compute each data results for each layers from the input layer to the output
+        /// </summary>
+        /// <param name="a">previous data results of a of all layers</param>
+        /// <returns>data results of a of all layers</returns>
+        public List<float[,]> Feedfoward(List<float[,]> a)
         {
             foreach (var (b, w) in Biases.Zip(Weights))
             {
-                a = Neuron.Sigmoid(a);
+                //a = Neuron.Sigmoid(a);
             }
             return a;
         }

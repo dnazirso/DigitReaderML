@@ -3,10 +3,10 @@ using Xunit;
 
 namespace AlgebraTests.MatrixTests
 {
-    public class DotTest
+    public class TransposeTest
     {
         [Fact]
-        public void DotNominalBehavior()
+        public void TransposeNominalBehavior()
         {
             // Arrange
             float[,] A = new float[,]
@@ -17,16 +17,15 @@ namespace AlgebraTests.MatrixTests
 
             float[,] B = new float[,]
             {
-                { 1f, 0f ,0f},
-                { 0f, 1f ,0f},
-                { 0f, 0f ,1f}
+                { 1f, 3f },
+                { 2f, 4f }
             };
 
             // Act
-            var C = Matrix.Dot(A, B);
+            var C = Matrix.Transpose(A);
 
             // Assert
-            Assert.Equal(A, C);
+            Assert.Equal(C, B);
         }
     }
 }
