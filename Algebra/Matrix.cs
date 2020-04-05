@@ -64,5 +64,30 @@
 
             return C;
         }
+
+        /// <summary>
+        /// Matrix addition
+        /// Note : A and B has to be of the same dimensions
+        /// </summary>
+        /// <param name="A">matrix A</param>
+        /// <param name="B">matrix B</param>
+        /// <returns>a matrix af same dimension</returns>
+        public static float[,] Add(float[,] A, float[,] B)
+        {
+            var dimi = A.GetLength(0);
+            var dimj = A.GetLength(1);
+
+            var C = new float[dimi, dimj];
+
+            for (var i = 0; i < dimi; i++)
+            {
+                for (var j = 0; j < dimj; j++)
+                {
+                    C[i, j] = A[i, j] + B[i, j];
+                }
+            }
+
+            return C;
+        }
     }
 }
