@@ -1,16 +1,44 @@
-﻿using System;
+﻿using Algebra;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace NeuralNetwork
 {
+    /// <summary>
+    /// Represent the neural network
+    /// </summary>
     public class Network
     {
+        /// <summary>
+        /// Sizes of each layers
+        /// </summary>
         public List<int> Sizes { get; set; }
+
+        /// <summary>
+        /// Number of layers
+        /// </summary>
         public int NumberOfLayer { get; set; }
-        public List<float[,]> Activations { get; set; }
-        public List<float[,]> Biases { get; set; }
-        public List<float[,]> Weights { get; set; }
+
+        /// <summary>
+        /// List of Activations matrises
+        /// </summary>
+        public List<Matrix> Activations { get; set; }
+
+        /// <summary>
+        /// List of Biases vectors
+        /// </summary>
+        public List<Matrix> Biases { get; set; }
+
+        /// <summary>
+        /// List of Weights matrises
+        /// </summary>
+        public List<Matrix> Weights { get; set; }
+
+        /// <summary>
+        /// Neural network constructor
+        /// </summary>
+        /// <param name="Sizes"></param>
         public Network(List<int> Sizes)
         {
             this.Sizes = Sizes;
@@ -65,14 +93,9 @@ namespace NeuralNetwork
         /// <returns>data results of a of all layers</returns>
         public void Feedfoward()
         {
-            for (int l = 1; l < NumberOfLayer; l++)
+            for (int l = 1; l < NumberOfLayer + 1; l++)
             {
-                var nbNeuron = Biases[l - 1].GetLength(0);
-                for (int n = 0; n < nbNeuron;)
-                {
-
-                }
-                var a = Activations[l][0, 0];
+                Activations[l] = Neuron.Sigmoid((Activations[l - 1] * Weights[l - 1]) + Biases[l - 1]);
             }
         }
 
