@@ -9,18 +9,18 @@ namespace AlgebraTests.MatrixTests
         public void DotNominalBehavior()
         {
             // Arrange
-            Matrix A = new Matrix(new float[,]
+            Matrix A = new float[,]
             {
                 { 1f, 2f },
                 { 3f, 4f }
-            });
+            };
 
-            Matrix B = new Matrix(new float[,]
+            Matrix B = new float[,]
             {
                 { 1f, 0f ,0f},
                 { 0f, 1f ,0f},
                 { 0f, 0f ,1f}
-            });
+            };
 
             // Act
             var C = A * B;

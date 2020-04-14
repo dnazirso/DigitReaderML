@@ -1,11 +1,13 @@
-﻿namespace Algebra
+﻿using System.Linq;
+
+namespace Algebra
 {
     public struct Matrix
     {
         /// <summary>
         /// represent the matix itslef
         /// </summary>
-        private float[,] mat { get; set; }
+        public readonly float[,] mat { get; }
 
         /// <summary>
         /// constructor
@@ -19,9 +21,15 @@
         /// <summary>
         /// Matrix A = new float[,]{};
         /// </summary>
-        /// <param name="mat">float[,]</param>
-        //public static implicit operator Matrix(float[,] mat) => new Matrix(mat);
-        //public static explicit operator float[,](Matrix A) => A.mat;
+        /// <param name="mat">a float[,]</param>
+        public static implicit operator Matrix(float[,] mat) => new Matrix(mat);
+
+
+        /// <summary>
+        /// float[,] A = (Matrix)B;
+        /// </summary>
+        /// <param name="mat">a Matrix</param>
+        public static explicit operator float[,](Matrix A) => A.mat;
 
         /// <summary>
         /// Transpose a matrix
@@ -30,14 +38,14 @@
         /// <returns>a transposed matrix</returns>
         public Matrix Transpose()
         {
-            var dimAi = mat.GetLength(0);
-            var dimAj = mat.GetLength(1);
+            int dimAi = mat.GetLength(0);
+            int dimAj = mat.GetLength(1);
 
-            var At = new float[dimAj, dimAi];
+            float[,] At = new float[dimAj, dimAi];
 
-            for (var i = 0; i < mat.GetLength(0); i++)
+            for (int i = 0; i < mat.GetLength(0); i++)
             {
-                for (var j = 0; j < mat.GetLength(1); j++)
+                for (int j = 0; j < mat.GetLength(1); j++)
                 {
                     At[i, j] = mat[j, i];
                 }
@@ -46,24 +54,56 @@
             return new Matrix(At);
         }
 
+        /// <summary>
+        /// Determines whether the matrises are considered equal
+        /// </summary>
+        /// <param name="obj">The second matrix to compare</param>
+        /// <returns>true if the matrises are considered equal; otherwise, false</returns>
         public override bool Equals(object obj)
         {
-            if (!(obj is Matrix))
+            if (obj is Matrix)
             {
-                return false;
+                float[,] f = ((Matrix)obj).mat;
+
+                float[,] mat = this.mat;
+
+                bool isEqual = mat.Rank == f.Rank
+                    && Enumerable.Range(0, mat.Rank).All(dimension => mat.GetLength(dimension) == f.GetLength(dimension))
+                    && mat.Cast<float>().SequenceEqual(f.Cast<float>());
+
+                return isEqual;
             }
 
-            var f = ((Matrix)obj).mat;
-
-            var isEqual = mat.Equals(f);
-
-            return isEqual;
+            return false;
         }
 
+        /// <summary>
+        /// Get matrix hashcode
+        /// </summary>
+        /// <returns></returns>
         public override int GetHashCode() => mat.GetHashCode();
+
+        /// <summary>
+        /// Stringify the matrix representation
+        /// </summary>
+        /// <returns>a string representation of the matrix</returns>
         public override string ToString() => mat.ToString();
-        public static bool operator ==(Matrix A, Matrix B) => A.mat == B.mat;
-        public static bool operator !=(Matrix A, Matrix B) => A.mat != B.mat;
+
+        /// <summary>
+        /// Basic check of equality
+        /// </summary>
+        /// <param name="A">first matrix</param>
+        /// <param name="B">second matrix</param>
+        /// <returns>true if the matrises are considered equal; otherwise, false</returns>
+        public static bool operator ==(Matrix A, Matrix B) => A.Equals(B);
+
+        /// <summary>
+        /// Basic check of inequality
+        /// </summary>
+        /// <param name="A">first matrix</param>
+        /// <param name="B">second matrix</param>
+        /// <returns>true if the matrises are considered inequal; otherwise, false</returns>
+        public static bool operator !=(Matrix A, Matrix B) => !A.Equals(B);
 
         /// <summary>
         /// Matrix mutiplication

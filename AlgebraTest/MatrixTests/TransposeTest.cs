@@ -9,17 +9,17 @@ namespace AlgebraTests.MatrixTests
         public void TransposeNominalBehavior()
         {
             // Arrange
-            Matrix A = new Matrix(new float[,]
+            Matrix A = new float[,]
             {
                 { 1f, 2f },
                 { 3f, 4f }
-            });
+            };
 
-            Matrix expected = new Matrix(new float[,]
+            Matrix expected = new float[,]
             {
                 { 1f, 3f },
                 { 2f, 4f }
-            });
+            };
 
             // Act
             var C = A.Transpose();

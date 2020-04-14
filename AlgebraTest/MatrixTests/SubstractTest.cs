@@ -3,10 +3,10 @@ using Xunit;
 
 namespace AlgebraTests.MatrixTests
 {
-    public class AddTest
+    public class SubstractTest
     {
         [Fact]
-        public void AddNominalBehavior()
+        public void MinusNominalBehavior()
         {
             // Arrange
             Matrix A = new float[,]
@@ -23,12 +23,12 @@ namespace AlgebraTests.MatrixTests
 
             Matrix expected = new float[,]
             {
-                { 2f, 2f },
-                { 3f, 5f },
+                { 0f, 2f },
+                { 3f, 3f },
             };
 
             // Act
-            var C = A + B;
+            var C = A - B;
 
             // Assert
             Assert.Equal(expected, C);
