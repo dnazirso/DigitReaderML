@@ -9,23 +9,23 @@ namespace AlgebraTests.MatrixTests
         public void TransposeNominalBehavior()
         {
             // Arrange
-            float[,] A = new float[,]
+            Matrix A = new Matrix(new float[,]
             {
                 { 1f, 2f },
                 { 3f, 4f }
-            };
+            });
 
-            float[,] B = new float[,]
+            Matrix expected = new Matrix(new float[,]
             {
                 { 1f, 3f },
                 { 2f, 4f }
-            };
+            });
 
             // Act
-            var C = Matrix.Transpose(A);
+            var C = A.Transpose();
 
             // Assert
-            Assert.Equal(C, B);
+            Assert.Equal(expected, C);
         }
     }
 }

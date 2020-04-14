@@ -8,16 +8,27 @@ namespace NeuralNetwork
     {
         public List<int> Sizes { get; set; }
         public int NumberOfLayer { get; set; }
+        public List<float[,]> Activations { get; set; }
         public List<float[,]> Biases { get; set; }
         public List<float[,]> Weights { get; set; }
         public Network(List<int> Sizes)
         {
-
             this.Sizes = Sizes;
             NumberOfLayer = Sizes.Count;
 
             Random rbiases = new Random();
             Random rweights = new Random();
+
+            // Initialize Activations
+            foreach (var y in Sizes)
+            {
+                var activation = new float[y, 1];
+                for (var i = 0; i < y; i++)
+                {
+                    activation[i, 0] = 0f;
+                }
+                Activations.Add(activation);
+            }
 
             // Initialize Biases
             foreach (var y in Sizes.Skip(1))
@@ -30,10 +41,8 @@ namespace NeuralNetwork
                 Biases.Add(biases);
             }
 
-            var ziped = Sizes.SkipLast(1).Zip(Sizes.Skip(1));
-
             // Initialize Weights
-            foreach (var (x, y) in ziped)
+            foreach (var (x, y) in Sizes.SkipLast(1).Zip(Sizes.Skip(1)))
             {
                 // x => number of neuron in previous layer
                 // y => number of neuron in actual layer
@@ -54,13 +63,17 @@ namespace NeuralNetwork
         /// </summary>
         /// <param name="a">previous data results of a of all layers</param>
         /// <returns>data results of a of all layers</returns>
-        public List<float[,]> Feedfoward(List<float[,]> a)
+        public void Feedfoward()
         {
-            foreach (var (b, w) in Biases.Zip(Weights))
+            for (int l = 1; l < NumberOfLayer; l++)
             {
-                //a = Neuron.Sigmoid(a);
+                var nbNeuron = Biases[l - 1].GetLength(0);
+                for (int n = 0; n < nbNeuron;)
+                {
+
+                }
+                var a = Activations[l][0, 0];
             }
-            return a;
         }
 
         /// <summary>

@@ -9,21 +9,21 @@ namespace AlgebraTests.MatrixTests
         public void DotNominalBehavior()
         {
             // Arrange
-            float[,] A = new float[,]
+            Matrix A = new Matrix(new float[,]
             {
                 { 1f, 2f },
                 { 3f, 4f }
-            };
+            });
 
-            float[,] B = new float[,]
+            Matrix B = new Matrix(new float[,]
             {
                 { 1f, 0f ,0f},
                 { 0f, 1f ,0f},
                 { 0f, 0f ,1f}
-            };
+            });
 
             // Act
-            var C = Matrix.Dot(A, B);
+            var C = A * B;
 
             // Assert
             Assert.Equal(A, C);

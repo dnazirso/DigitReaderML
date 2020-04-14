@@ -9,26 +9,26 @@ namespace AlgebraTests.MatrixTests
         public void AddNominalBehavior()
         {
             // Arrange
-            float[,] A = new float[,]
+            Matrix A = new Matrix(new float[,]
             {
                 { 1f, 2f },
                 { 3f, 4f }
-            };
+            });
 
-            float[,] B = new float[,]
+            Matrix B = new Matrix(new float[,]
             {
                 { 1f, 0f },
                 { 0f, 1f },
-            };
+            });
 
-            float[,] expected = new float[,]
+            Matrix expected = new Matrix(new float[,]
             {
                 { 2f, 2f },
                 { 3f, 5f },
-            };
+            });
 
             // Act
-            var C = Matrix.Add(A, B);
+            var C = A + B;
 
             // Assert
             Assert.Equal(expected, C);
