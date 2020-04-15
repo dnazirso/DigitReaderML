@@ -27,7 +27,7 @@ namespace NeuralNetwork
 
             for (int i = 0; i < maxi; i++)
             {
-                for (int j = 0; j < maxi; j++)
+                for (int j = 0; j < maxj; j++)
                 {
                     A[i, j] = Sigmoid(Z.mat[i, j]);
                 }
@@ -58,7 +58,7 @@ namespace NeuralNetwork
 
             for (int i = 0; i < maxi; i++)
             {
-                for (int j = 0; j < maxi; j++)
+                for (int j = 0; j < maxj; j++)
                 {
                     A[i, j] = SigmoidPrime(Z.mat[i, j]);
                 }
