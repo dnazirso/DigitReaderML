@@ -11,7 +11,7 @@ namespace NeuralNetworkTests.NetworkTests
         public void NetworkHasASizes()
         {
             // Arrange
-            var sizes = new List<int> { 126, 8, 8, 8, 10 };
+            var sizes = new List<int> { 3, 2, 1 };
 
             // Act
             var network = new Network(sizes);
@@ -24,7 +24,7 @@ namespace NeuralNetworkTests.NetworkTests
         public void NetworkHasCorrectNumberOfLayer()
         {
             // Arrange
-            var sizes = new List<int> { 126, 8, 8, 8, 10 };
+            var sizes = new List<int> { 3, 2, 1 };
 
             // Act
             var network = new Network(sizes);
