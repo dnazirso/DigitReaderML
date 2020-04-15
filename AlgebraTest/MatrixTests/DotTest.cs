@@ -17,9 +17,8 @@ namespace AlgebraTests.MatrixTests
 
             Matrix B = new float[,]
             {
-                { 1f, 0f ,0f},
-                { 0f, 1f ,0f},
-                { 0f, 0f ,1f}
+                { 1f, 0f },
+                { 0f, 1f },
             };
 
             // Act
@@ -27,6 +26,37 @@ namespace AlgebraTests.MatrixTests
 
             // Assert
             Assert.Equal(A, C);
+        }
+
+        [Fact]
+        public void DotVector()
+        {
+            // Arrange
+            Matrix A = new float[,]
+            {
+                { 1f, 2f ,3f },
+                { 4f, 5f ,6f }
+            };
+
+            Matrix B = new float[,]
+            {
+                { 1f },
+                { 1f },
+                { 1f }
+            };
+
+
+            Matrix expected = new float[,]
+            {
+                { 6f },
+                { 15f }
+            };
+
+            // Act
+            var C = A * B;
+
+            // Assert
+            Assert.Equal(expected, C);
         }
     }
 }

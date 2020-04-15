@@ -119,24 +119,22 @@ namespace Algebra
             var dimBi = B.mat.GetLength(0);
             var dimBj = B.mat.GetLength(1);
 
-            var imax = dimAi > dimBj ? dimBj : dimAi;
-            var jmax = dimAj > dimBi ? dimBi : dimAj;
+            var dimCn = dimAj > dimBi ? dimBi : dimAj;
 
-            var C = new float[imax, jmax];
+            var C = new float[dimAi, dimBj];
 
-            float ComputeC(int m, int p)
+            float ComputeC(int i, int j, float cij = 0)
             {
-                float cij = 0;
-                for (var n = 0; n < jmax; n++)
+                for (var n = 0; n < dimCn; n++)
                 {
-                    cij += A.mat[m, n] * B.mat[n, p];
+                    cij += A.mat[i, n] * B.mat[n, j];
                 }
                 return cij;
             }
 
-            for (var i = 0; i < imax; i++)
+            for (var i = 0; i < dimAi; i++)
             {
-                for (var j = 0; j < jmax; j++)
+                for (var j = 0; j < dimBj; j++)
                 {
                     C[i, j] += ComputeC(i, j);
                 }
