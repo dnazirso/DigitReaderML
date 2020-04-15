@@ -48,16 +48,16 @@ namespace NeuralNetwork
             Random rweights = new Random();
 
             // Initialize Activations
-            foreach (var y in Sizes)
+            foreach (int y in Sizes)
             {
                 Activations.Add(new float[y, 1]);
             }
 
             // Initialize Biases
-            foreach (var y in Sizes.Skip(1))
+            foreach (int y in Sizes.Skip(1))
             {
                 var biases = new float[y, 1];
-                for (var i = 0; i < y; i++)
+                for (int i = 0; i < y; i++)
                 {
                     biases[i, 0] = (float)rbiases.NextDouble();
                 }
@@ -76,8 +76,8 @@ namespace NeuralNetwork
                     {
                         layer[i, j] = (float)rweights.NextDouble();
                     }
-                    Weights.Add(layer);
                 }
+                Weights.Add(layer);
             }
         }
 
