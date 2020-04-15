@@ -27,5 +27,27 @@ namespace AlgebraTests.MatrixTests
             // Assert
             Assert.Equal(expected, C);
         }
+
+        [Fact]
+        public void TransposeVector()
+        {
+            // Arrange
+            Matrix A = new float[,]
+            {
+                { 1f },
+                { 3f }
+            };
+
+            Matrix expected = new float[,]
+            {
+                { 1f, 3f },
+            };
+
+            // Act
+            var C = A.Transpose();
+
+            // Assert
+            Assert.Equal(expected, C);
+        }
     }
 }

@@ -47,7 +47,7 @@ namespace Algebra
             {
                 for (int j = 0; j < mat.GetLength(1); j++)
                 {
-                    At[i, j] = mat[j, i];
+                    At[j, i] = mat[i, j];
                 }
             }
 
