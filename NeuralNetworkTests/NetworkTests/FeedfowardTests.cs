@@ -20,7 +20,7 @@ namespace NeuralNetworkTests.NetworkTests
             network.Feedfoward();
 
             // Assert
-            Assert.True(network.Activations[0].mat.Cast<float>().SequenceEqual(inputs));
+            Assert.True(network.Activations[1].mat.Cast<float>().All(a => a != 0));
         }
     }
 }

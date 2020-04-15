@@ -102,9 +102,9 @@ namespace NeuralNetwork
         /// <returns>data results of a of all layers</returns>
         public void Feedfoward()
         {
-            for (int l = 1; l < NumberOfLayer + 1; l++)
+            for (int l = 1; l < NumberOfLayer; l++)
             {
-                Activations[l] = Neuron.Sigmoid((Activations[l - 1] * Weights[l - 1]) + Biases[l - 1]);
+                Activations[l] = Neuron.Sigmoid((Weights[l - 1] * Activations[l - 1]) + Biases[l - 1]);
             }
         }
 
