@@ -23,17 +23,17 @@ namespace NeuralNetwork
         /// <summary>
         /// List of Activations matrises
         /// </summary>
-        public List<Matrix> Activations { get; set; }
+        public List<Matrix> Activations { get; set; } = new List<Matrix>();
 
         /// <summary>
         /// List of Biases vectors
         /// </summary>
-        public List<Matrix> Biases { get; set; }
+        public List<Matrix> Biases { get; set; } = new List<Matrix>();
 
         /// <summary>
         /// List of Weights matrises
         /// </summary>
-        public List<Matrix> Weights { get; set; }
+        public List<Matrix> Weights { get; set; } = new List<Matrix>();
 
         /// <summary>
         /// Neural network constructor
@@ -50,12 +50,7 @@ namespace NeuralNetwork
             // Initialize Activations
             foreach (var y in Sizes)
             {
-                var activation = new float[y, 1];
-                for (var i = 0; i < y; i++)
-                {
-                    activation[i, 0] = 0f;
-                }
-                Activations.Add(activation);
+                Activations.Add(new float[y, 1]);
             }
 
             // Initialize Biases
@@ -83,6 +78,20 @@ namespace NeuralNetwork
                     }
                     Weights.Add(layer);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Initialize input neurons with an input vector
+        /// </summary>
+        /// <param name="inputs">input vector</param>
+        public void InitializeInputNeurons(float[] inputs)
+        {
+            int maxi = Sizes[0];
+
+            for (int i = 0; i < maxi; i++)
+            {
+                Activations[0].mat[i, 0] = inputs[i];
             }
         }
 
