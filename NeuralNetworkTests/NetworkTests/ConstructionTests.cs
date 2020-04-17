@@ -8,19 +8,6 @@ namespace NeuralNetworkTests.NetworkTests
     public class ConstructionTests
     {
         [Fact]
-        public void NetworkHasASizes()
-        {
-            // Arrange
-            var sizes = new List<int> { 3, 2, 1 };
-
-            // Act
-            var network = new Network(sizes);
-
-            // Assert
-            Assert.True(sizes.SequenceEqual(network.Sizes));
-        }
-
-        [Fact]
         public void NetworkHasCorrectNumberOfLayer()
         {
             // Arrange
@@ -32,5 +19,45 @@ namespace NeuralNetworkTests.NetworkTests
             // Assert
             Assert.Equal(sizes.Count, network.NumberOfLayer);
         }
+
+        [Fact]
+        public void NetworkHasNonEmptyBiasesVectors()
+        {
+            // Arrange
+            var sizes = new List<int> { 3, 2, 1 };
+
+            // Act
+            var network = new Network(sizes);
+
+            // Assert
+            Assert.NotEmpty(network.Biases);
+        }
+
+        [Fact]
+        public void NetworkHasNonEmptyWeightMatrises()
+        {
+            // Arrange
+            var sizes = new List<int> { 3, 2, 1 };
+
+            // Act
+            var network = new Network(sizes);
+
+            // Assert
+            Assert.NotEmpty(network.Weights);
+        }
+
+        [Fact]
+        public void NetworkHasNonEmptyActivationVectors()
+        {
+            // Arrange
+            var sizes = new List<int> { 3, 2, 1 };
+
+            // Act
+            var network = new Network(sizes);
+
+            // Assert
+            Assert.NotEmpty(network.Activations);
+        }
+
     }
 }

@@ -11,38 +11,73 @@ namespace NeuralNetwork
     public class Network
     {
         /// <summary>
-        /// Sizes of each layers
-        /// </summary>
-        public List<int> Sizes { get; set; }
-
-        /// <summary>
         /// Number of layers
         /// </summary>
         public int NumberOfLayer { get; set; }
 
         /// <summary>
+        /// Expected answer when the network learns
+        /// </summary>
+        private float[] Expected { get; set; }
+
+        /// <summary>
         /// List of Activations matrises
         /// </summary>
-        public List<Matrix> Activations { get; set; } = new List<Matrix>();
+        public List<Matrix> Activations { get; private set; }
 
         /// <summary>
         /// List of Biases vectors
         /// </summary>
-        public List<Matrix> Biases { get; set; } = new List<Matrix>();
+        public List<Matrix> Biases { get; private set; }
 
         /// <summary>
         /// List of Weights matrises
         /// </summary>
-        public List<Matrix> Weights { get; set; } = new List<Matrix>();
+        public List<Matrix> Weights { get; private set; }
 
         /// <summary>
-        /// Neural network constructor
+        /// Neural network constructor for custom purpose
         /// </summary>
-        /// <param name="Sizes"></param>
+        /// <param name="Sizes">List number of neuron per layer</param>
         public Network(List<int> Sizes)
         {
-            this.Sizes = Sizes;
+            InitializeNetwork(Sizes);
+        }
+
+        /// <summary>
+        /// Neural network constructor for use
+        /// </summary>
+        /// <param name="Layers">List number of neurons per hidden layer and lately in the output layer</param>
+        public Network(float[] Inputs, List<int> Layers)
+        {
+            List<int> Sizes = new List<int> { Inputs.Length };
+            Sizes.AddRange(Layers);
+
+            InitializeNetwork(Sizes);
+            InitializeInputNeurons(Inputs);
+        }
+
+        /// <summary>
+        /// Neural network constructor for learning
+        /// </summary>
+        /// <param name="HiddenLayers">List number of neurons per hidden layer</param>
+        public Network(float[] Inputs, float[] Expected, List<int> HiddenLayers)
+        {
+            List<int> Sizes = new List<int> { Inputs.Length };
+            Sizes.AddRange(HiddenLayers);
+            Sizes.Add(Expected.Length);
+
+            InitializeNetwork(Sizes);
+            InitializeInputNeurons(Inputs);
+            this.Expected = Expected;
+        }
+
+        private void InitializeNetwork(List<int> Sizes)
+        {
             NumberOfLayer = Sizes.Count;
+            Activations = new List<Matrix>();
+            Biases = new List<Matrix>();
+            Weights = new List<Matrix>();
 
             Random rbiases = new Random();
             Random rweights = new Random();
@@ -87,9 +122,7 @@ namespace NeuralNetwork
         /// <param name="inputs">input vector</param>
         public void InitializeInputNeurons(float[] inputs)
         {
-            int maxi = Sizes[0];
-
-            for (int i = 0; i < maxi; i++)
+            for (int i = 0; i < inputs.Length; i++)
             {
                 Activations[0].mat[i, 0] = inputs[i];
             }
