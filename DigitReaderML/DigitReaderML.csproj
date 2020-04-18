@@ -5,4 +5,14 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="mnist_png\**" />
+    <EmbeddedResource Remove="mnist_png\**" />
+    <None Remove="mnist_png\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="mnist_png.tar.gz" />
+  </ItemGroup>
+
 </Project>
