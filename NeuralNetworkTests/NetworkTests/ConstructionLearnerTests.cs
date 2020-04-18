@@ -5,10 +5,10 @@ using Xunit;
 
 namespace NeuralNetworkTests.NetworkTests
 {
-    public class FeedfowardTests
+    public class ConstructionLearnerTests
     {
         [Fact]
-        public void FeedfowardNominalBehavior()
+        public void InitializeInputNeuronsNominalBehavior()
         {
             // Arrange
             var hiddens = new List<int> { 8, 8 };
@@ -23,13 +23,12 @@ namespace NeuralNetworkTests.NetworkTests
             {
                 { 0 },
             };
-            var network = new Network(inputs, expectedAns, hiddens);
 
             // Act
-            network.Feedfoward();
+            var network = new Network(inputs, expectedAns, hiddens);
 
             // Assert
-            Assert.True(network.Activations[1].mat.Cast<float>().All(a => a != 0));
+            Assert.True(network.Activations[0].mat.Cast<float>().SequenceEqual(inputs.Cast<float>()));
         }
     }
 }

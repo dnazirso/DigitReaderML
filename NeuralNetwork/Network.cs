@@ -18,7 +18,7 @@ namespace NeuralNetwork
         /// <summary>
         /// Expected answer when the network learns
         /// </summary>
-        private float[] Expected { get; set; }
+        private Matrix Expected { get; set; }
 
         /// <summary>
         /// List of Activations matrises
@@ -47,28 +47,32 @@ namespace NeuralNetwork
         /// <summary>
         /// Neural network constructor for use
         /// </summary>
-        /// <param name="Layers">List number of neurons per hidden layer and lately in the output layer</param>
-        public Network(float[] Inputs, List<int> Layers)
+        /// <param name="Inputs">Input values</param>
+        /// <param name="Weights">Weight matrises from previous learning</param>
+        /// <param name="Biases">Biases matrises from previous learning</param>
+        public Network(float[,] Inputs, List<float[,]> Weights, List<float[,]> Biases)
         {
-            List<int> Sizes = new List<int> { Inputs.Length };
-            Sizes.AddRange(Layers);
-
-            InitializeNetwork(Sizes);
-            InitializeInputNeurons(Inputs);
+            List<Matrix> biases = Biases.Select(b => (Matrix)b).ToList();
+            this.Weights = Weights.Select(w => (Matrix)w).ToList();
+            this.Biases = biases;
+            Activations = new List<Matrix> { Inputs };
+            Activations.AddRange(biases);
         }
 
         /// <summary>
         /// Neural network constructor for learning
         /// </summary>
-        /// <param name="HiddenLayers">List number of neurons per hidden layer</param>
-        public Network(float[] Inputs, float[] Expected, List<int> HiddenLayers)
+        /// <param name="Inputs">Input values</param>
+        /// <param name="Expected">Expected answer</param>
+        /// <param name="HiddenLayers">Hidden Layers</param>
+        public Network(float[,] Inputs, float[,] Expected, List<int> HiddenLayers)
         {
             List<int> Sizes = new List<int> { Inputs.Length };
             Sizes.AddRange(HiddenLayers);
             Sizes.Add(Expected.Length);
 
             InitializeNetwork(Sizes);
-            InitializeInputNeurons(Inputs);
+            Activations[0] = Inputs;
             this.Expected = Expected;
         }
 
@@ -117,18 +121,6 @@ namespace NeuralNetwork
         }
 
         /// <summary>
-        /// Initialize input neurons with an input vector
-        /// </summary>
-        /// <param name="inputs">input vector</param>
-        public void InitializeInputNeurons(float[] inputs)
-        {
-            for (int i = 0; i < inputs.Length; i++)
-            {
-                Activations[0].mat[i, 0] = inputs[i];
-            }
-        }
-
-        /// <summary>
         /// Compute each data results for each layers from the input layer to the output
         /// </summary>
         /// <param name="a">previous data results of a of all layers</param>
@@ -144,11 +136,18 @@ namespace NeuralNetwork
         /// <summary>
         /// Train the newtmork with the stockastic gradient descent method
         /// </summary>
-        public void StochasticGradientDescent() { }
+        public void StochasticGradientDescent()
+        {
+
+        }
 
         /// <summary>
         /// Update a mini batch of results representing a small portion of the neural network
         /// </summary>
         public void UpdateMiniBatch() { }
+
+        public void BackPropagation() { }
+        public void Evaluate() { }
+        public void CostDerivative() { }
     }
 }
