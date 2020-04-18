@@ -106,6 +106,7 @@ namespace Algebra
 
         /// <summary>
         /// Matrix mutiplication
+        /// Note : A width must be of the length than B height
         /// </summary>
         /// <param name="A">matrix A</param>
         /// <param name="B">matrix B</param>

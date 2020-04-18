@@ -45,7 +45,6 @@ namespace AlgebraTests.MatrixTests
                 { 1f }
             };
 
-
             Matrix expected = new float[,]
             {
                 { 6f },

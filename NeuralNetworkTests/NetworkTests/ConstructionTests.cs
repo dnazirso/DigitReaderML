@@ -1,6 +1,5 @@
 ﻿using NeuralNetwork;
 using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace NeuralNetworkTests.NetworkTests
