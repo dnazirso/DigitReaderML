@@ -11,7 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlgebraTests", "AlgebraTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuralNetwork", "NeuralNetwork\NeuralNetwork.csproj", "{5BB16A23-62C2-4918-91F7-8FB3BB016419}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuralNetworkTests", "NeuralNetworkTests\NeuralNetworkTests.csproj", "{3F59CA74-9633-405D-A935-5A7EC5F7BDD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuralNetworkTests", "NeuralNetworkTests\NeuralNetworkTests.csproj", "{3F59CA74-9633-405D-A935-5A7EC5F7BDD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLoaders", "DataLoaders\DataLoaders.csproj", "{E3856624-E326-40F9-9B58-5833E5D23C64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLoadersTests", "DataLoadersTests\DataLoadersTests.csproj", "{CC30AB4A-1BF7-4551-82EA-127291056ABC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{3F59CA74-9633-405D-A935-5A7EC5F7BDD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F59CA74-9633-405D-A935-5A7EC5F7BDD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F59CA74-9633-405D-A935-5A7EC5F7BDD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3856624-E326-40F9-9B58-5833E5D23C64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3856624-E326-40F9-9B58-5833E5D23C64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3856624-E326-40F9-9B58-5833E5D23C64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3856624-E326-40F9-9B58-5833E5D23C64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC30AB4A-1BF7-4551-82EA-127291056ABC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC30AB4A-1BF7-4551-82EA-127291056ABC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC30AB4A-1BF7-4551-82EA-127291056ABC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC30AB4A-1BF7-4551-82EA-127291056ABC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -24,7 +24,6 @@ namespace Algebra
         /// <param name="mat">a float[,]</param>
         public static implicit operator Matrix(float[,] mat) => new Matrix(mat);
 
-
         /// <summary>
         /// float[,] A = (Matrix)B;
         /// </summary>
