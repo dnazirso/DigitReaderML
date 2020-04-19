@@ -2,6 +2,6 @@
 {
     public interface IDataLoader
     {
-        float[] Load(string path);
+        float[,] Load(string path);
     }
 }

@@ -12,7 +12,7 @@ namespace DataLoadersTests.ImageLoaderTests
             IDataLoader loader = new ImageLoader();
 
             // Act
-            float[] data = loader.Load("./ImageLoaderTests/1.png");
+            float[,] data = loader.Load("./ImageLoaderTests/1.png");
 
             // Assert
             Assert.NotEmpty(data);
