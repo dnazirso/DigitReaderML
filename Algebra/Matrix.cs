@@ -144,6 +144,43 @@ namespace Algebra
         }
 
         /// <summary>
+        /// Matrix mutiplication
+        /// Note : A width must be of the length than B height
+        /// </summary>
+        /// <param name="A">matrix A</param>
+        /// <param name="B">real B</param>
+        /// <returns>a matrix result</returns>
+        public static Matrix operator *(Matrix A, float B)
+        {
+            var dimAi = A.mat.GetLength(0);
+            var dimAj = A.mat.GetLength(1);
+
+            var C = new float[dimAi, dimAj];
+
+            for (var i = 0; i < dimAi; i++)
+            {
+                for (var j = 0; j < dimAj; j++)
+                {
+                    C[i, j] = A.mat[i, j] * B;
+                }
+            }
+
+            return new Matrix(C);
+        }
+        
+        /// <summary>
+        /// Matrix mutiplication
+        /// Note : A width must be of the length than B height
+        /// </summary>
+        /// <param name="A">real A</param>
+        /// <param name="B">matrix B</param>
+        /// <returns>a matrix result</returns>
+        public static Matrix operator *(float A, Matrix B)
+        {
+            return B * A;
+        }
+
+        /// <summary>
         /// Matrix addition
         /// Note : A and B has to be of the same dimensions
         /// </summary>

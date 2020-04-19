@@ -57,5 +57,30 @@ namespace AlgebraTests.MatrixTests
             // Assert
             Assert.Equal(expected, C);
         }
+
+        [Fact]
+        public void DotReal()
+        {
+            // Arrange
+            Matrix A = new float[,]
+            {
+                { 1f, 2f ,3f },
+                { 4f, 5f ,6f }
+            };
+
+            float B = 2;
+
+            Matrix expected = new float[,]
+            {
+                { 2f, 4f ,6f },
+                { 8f, 10f ,12f }
+            };
+
+            // Act
+            var C = A * B;
+
+            // Assert
+            Assert.Equal(expected, C);
+        }
     }
 }
