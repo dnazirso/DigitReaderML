@@ -1,6 +1,8 @@
-﻿namespace DataLoaders
+﻿using System;
+
+namespace DataLoaders
 {
-    public interface IDataLoader
+    public interface IDataLoader : IDisposable
     {
         float[,] Load(string path);
     }
