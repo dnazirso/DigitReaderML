@@ -1,6 +1,7 @@
 ﻿using Algebra;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace NeuralNetwork
@@ -161,34 +162,30 @@ namespace NeuralNetwork
         /// <param name="miniBatchSize"></param>
         /// <param name="eta"></param>
         /// <param name="TestData"></param>
-        public void StochasticGradientDescent(List<Network> datas, int generations, int miniBatchSize, int eta, List<Network> TestData = null)
+        public void StochasticGradientDescent(List<Network> datas, int generations, int miniBatchSize, float eta, List<Network> TestData = null)
         {
-            int n = datas.Count;
+            Console.WriteLine("beginning learing using the stochastic gradient descent method");
 
             for (int j = 0; j < generations; j++)
             {
                 datas.Shuffle();
 
-                List<List<Network>> miniBatches = new List<List<Network>>();
-
-                for (int k = 0; k < n; k += miniBatchSize)
-                {
-                    var miniBatch = datas.GetRange(k, k + miniBatchSize);
-                    miniBatches.Add(miniBatch);
-                }
+                List<List<Network>> miniBatches = datas.ChunkBy(miniBatchSize);
 
                 foreach (List<Network> miniBatch in miniBatches)
                 {
                     UpdateMiniBatch(miniBatch, eta);
                 }
 
-                //Feedfoward();
-                //float[] arr = Activations.Cast<float>().ToArray();
-                //float max = arr.Max();
-                //int maxIndex = Array.IndexOf(arr, max);
-                //Console.WriteLine($"genration {j} gives the answer {maxIndex} with {max} accuracy");
+                if (TestData != null)
+                {
+                    Console.WriteLine($"generation {j} success rate is {Evaluate(TestData)} / {TestData.Count}");
+                }
+                else
+                {
+                    Console.WriteLine($"generation {j} complete");
+                }
 
-                Console.WriteLine($"genration {j} complete");
             }
         }
 
@@ -205,7 +202,7 @@ namespace NeuralNetwork
             for (int n = 0; n < miniBatch.Count; n++)
             {
                 DeltaNabla deltaNabla = BackPropagation(miniBatch[n]);
-                for (int l = 0; l < NumberOfLayer; l++)
+                for (int l = 0; l < NumberOfLayer - 1; l++)
                 {
                     nablaBiases[l] = nablaBiases[l] + deltaNabla.Biases[l];
                     nablaWeights[l] = nablaWeights[l] + deltaNabla.Weights[l];
@@ -214,7 +211,7 @@ namespace NeuralNetwork
 
             float K = eta / miniBatch.Count;
 
-            for (int l = 0; l < NumberOfLayer; l++)
+            for (int l = 0; l < NumberOfLayer - 1; l++)
             {
                 Biases[l] = Biases[l] - K * nablaBiases[l];
                 Weights[l] = Weights[l] - K * nablaWeights[l];
@@ -238,21 +235,48 @@ namespace NeuralNetwork
 
             for (int l = network.NumberOfLayer - 1; l > 0; l--)
             {
-                delta = (network.Weights[l + 1].Transpose() * delta) * Neuron.SigmoidPrime(network.Zmatrices[l]);
-                nablaBiases[l] = delta;
-                nablaWeights[l] = delta * network.Activations[l - 1].Transpose();
+                delta = (network.Weights[l - 1].Transpose() * delta) * Neuron.SigmoidPrime(network.Zmatrices[l]);
+                nablaBiases[l - 1] = delta;
+                nablaWeights[l - 1] = delta * network.Activations[l - 1].Transpose();
             }
 
             return new DeltaNabla { Biases = nablaBiases, Weights = nablaWeights };
         }
 
-        //public void Evaluate() { }
+        /// <summary>
+        /// Evaluate the number of networks that success to give the expected answer
+        /// </summary>
+        /// <param name="TestData">list of test networks</param>
+        /// <returns>number of succeeded</returns>
+        private int Evaluate(List<Network> TestData)
+        {
+            int suceeded = 0;
+            foreach (Network network in TestData)
+            {
+                network.Biases = Biases;
+                network.Weights = Weights;
+
+                network.Feedfoward();
+
+                float[] arrans = network.Activations.Last().mat.Cast<float>().ToArray();
+                float maxans = arrans.Max();
+                int maxIndexAns = Array.IndexOf(arrans, maxans);
+
+                float[] arrexp = network.Expected.mat.Cast<float>().ToArray();
+                float maxexp = arrexp.Max();
+                int maxIndexExp = Array.IndexOf(arrexp, maxexp);
+
+                suceeded += maxIndexAns == maxIndexExp ? 1 : 0;
+            }
+
+            return suceeded;
+        }
 
         /// <summary>
         /// Compute cost derivative : dCx/da
         /// </summary>
         /// <returns>dCx/da</returns>
-        public Matrix CostDerivative()
+        private Matrix CostDerivative()
         {
             return Activations.Last() - Expected;
         }
