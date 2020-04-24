@@ -15,4 +15,9 @@
     <None Remove="mnist_png.tar.gz" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DataLoaders\DataLoaders.csproj" />
+    <ProjectReference Include="..\NeuralNetwork\NeuralNetwork.csproj" />
+  </ItemGroup>
+
 </Project>
