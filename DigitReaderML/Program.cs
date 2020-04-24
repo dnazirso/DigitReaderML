@@ -20,7 +20,6 @@ namespace DigitReaderML
             using (IDataLoader loader = new ImageLoader())
             {
                 Console.WriteLine("Loading data");
-                List<int> hiddenLayersShape = new List<int> { 16, 16 };
 
                 string testingFolders = "..\\..\\..\\mnist_png\\testing\\";
                 string trainingFolders = "..\\..\\..\\mnist_png\\training\\";
