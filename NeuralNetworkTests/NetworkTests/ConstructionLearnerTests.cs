@@ -11,7 +11,7 @@ namespace NeuralNetworkTests.NetworkTests
         public void InitializeInputNeuronsNominalBehavior()
         {
             // Arrange
-            var hiddens = new List<int> { 8, 8 };
+            var hiddens = new List<int> { 8, 8, 1 };
             var inputs = new float[,]
             {
                 { 0.1f },
@@ -23,9 +23,13 @@ namespace NeuralNetworkTests.NetworkTests
             {
                 { 0 },
             };
+            var data = new Data { Inputs = inputs, Expected = expectedAns, Id = "test" };
+            var size = new List<int> { inputs.Length };
+            size.AddRange(hiddens);
+            Network network = new Network(size);
 
             // Act
-            var network = new Network(inputs, expectedAns, hiddens);
+            network.Activations[0] = inputs;
 
             // Assert
             Assert.True(network.Activations[0].mat.Cast<float>().SequenceEqual(inputs.Cast<float>()));

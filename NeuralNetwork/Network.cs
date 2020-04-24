@@ -12,11 +12,6 @@ namespace NeuralNetwork
     public class Network
     {
         /// <summary>
-        /// Expected answer when the network learns
-        /// </summary>
-        private Matrix Expected { get; set; }
-
-        /// <summary>
         /// Intermediary Matrix for Activations computation
         /// </summary>
         private List<Matrix> Zmatrices { get; set; }
@@ -74,25 +69,6 @@ namespace NeuralNetwork
             Feedfoward();
         }
 
-        /// <summary>
-        /// Neural network constructor for learning
-        /// </summary>
-        /// <param name="Inputs">Input values</param>
-        /// <param name="Expected">Expected answer</param>
-        /// <param name="HiddenLayers">Hidden Layers</param>
-        public Network(float[,] Inputs, float[,] Expected, List<int> HiddenLayers)
-        {
-            List<int> Sizes = new List<int> { Inputs.Length };
-            Sizes.AddRange(HiddenLayers);
-            Sizes.Add(Expected.Length);
-
-            InitializeNetwork(Sizes);
-            Activations[0] = Inputs;
-            this.Expected = Expected;
-
-            Feedfoward();
-        }
-
         private void InitializeNetwork(List<int> Sizes)
         {
             NumberOfLayer = Sizes.Count;
@@ -108,12 +84,12 @@ namespace NeuralNetwork
             foreach (int y in Sizes)
             {
                 Activations.Add(new float[y, 1]);
-                Zmatrices.Add(new float[y, 1]);
             }
 
-            // Initialize Biases
+            // Initialize Biases and Zmatrices
             foreach (int y in Sizes.Skip(1))
             {
+                Zmatrices.Add(new float[y, 1]);
                 var biases = new float[y, 1];
                 for (int i = 0; i < y; i++)
                 {
@@ -149,7 +125,7 @@ namespace NeuralNetwork
             for (int l = 1; l < NumberOfLayer; l++)
             {
                 Zmatrices[l - 1] = (Weights[l - 1] * Activations[l - 1]) + Biases[l - 1];
-                Activations[l] = Neuron.Sigmoid(Zmatrices[l]);
+                Activations[l] = Neuron.Sigmoid(Zmatrices[l - 1]);
             }
         }
 
@@ -162,7 +138,7 @@ namespace NeuralNetwork
         /// <param name="miniBatchSize"></param>
         /// <param name="eta"></param>
         /// <param name="TestData"></param>
-        public void StochasticGradientDescent(List<Network> datas, int generations, int miniBatchSize, float eta, List<Network> TestData = null)
+        public void StochasticGradientDescent(List<Data> datas, int generations, int miniBatchSize, float eta, List<Data> TestData = null)
         {
             Console.WriteLine("beginning learing using the stochastic gradient descent method");
 
@@ -170,9 +146,9 @@ namespace NeuralNetwork
             {
                 datas.Shuffle();
 
-                List<List<Network>> miniBatches = datas.ChunkBy(miniBatchSize);
+                List<List<Data>> miniBatches = datas.ChunkBy(miniBatchSize);
 
-                foreach (List<Network> miniBatch in miniBatches)
+                foreach (List<Data> miniBatch in miniBatches)
                 {
                     UpdateMiniBatch(miniBatch, eta);
                 }
@@ -180,12 +156,13 @@ namespace NeuralNetwork
                 if (TestData != null)
                 {
                     Console.WriteLine($"generation {j} success rate is {Evaluate(TestData)} / {TestData.Count}");
+                    Trace.WriteLine($"generation {j} success rate is {Evaluate(TestData)} / {TestData.Count}");
                 }
                 else
                 {
                     Console.WriteLine($"generation {j} complete");
+                    Trace.WriteLine($"generation {j} complete");
                 }
-
             }
         }
 
@@ -194,10 +171,12 @@ namespace NeuralNetwork
         /// </summary>
         /// <param name="miniBatch">small batch of datas</param>
         /// <param name="eta">leaning rate</param>
-        private void UpdateMiniBatch(List<Network> miniBatch, float eta)
+        private void UpdateMiniBatch(List<Data> miniBatch, float eta)
         {
             List<Matrix> nablaBiases = Biases.Select(b => new Matrix(new float[b.mat.GetLength(0), b.mat.GetLength(1)])).ToList();
             List<Matrix> nablaWeights = Weights.Select(w => new Matrix(new float[w.mat.GetLength(0), w.mat.GetLength(1)])).ToList();
+
+            float K = eta / miniBatch.Count;
 
             for (int n = 0; n < miniBatch.Count; n++)
             {
@@ -209,8 +188,6 @@ namespace NeuralNetwork
                 }
             }
 
-            float K = eta / miniBatch.Count;
-
             for (int l = 0; l < NumberOfLayer - 1; l++)
             {
                 Biases[l] = Biases[l] - K * nablaBiases[l];
@@ -221,52 +198,61 @@ namespace NeuralNetwork
         /// <summary>
         /// Propagate delta cost through the network to recompute weights and biases
         /// </summary>
-        /// <param name="network">network used as sample to learn</param>
+        /// <param name="data">network used as sample to learn</param>
         /// <returns>gradient of weight and biases</returns>
-        private DeltaNabla BackPropagation(Network network)
+        private DeltaNabla BackPropagation(Data data)
         {
-            List<Matrix> nablaBiases = Biases.Select(b => new Matrix(new float[b.mat.GetLength(0), b.mat.GetLength(1)])).ToList();
-            List<Matrix> nablaWeights = Weights.Select(w => new Matrix(new float[w.mat.GetLength(0), w.mat.GetLength(1)])).ToList();
+            Trace.WriteLine($"Backpropagation on {data.Id}");
 
-            Matrix delta = network.CostDerivative() * Neuron.SigmoidPrime(network.Zmatrices.Last());
+            List<Matrix> deltaNablaBiases = Biases.Select(b => new Matrix(new float[b.mat.GetLength(0), b.mat.GetLength(1)])).ToList();
+            List<Matrix> deltaNablaWeights = Weights.Select(w => new Matrix(new float[w.mat.GetLength(0), w.mat.GetLength(1)])).ToList();
 
-            nablaBiases[nablaBiases.Count - 1] = delta;
-            nablaWeights[nablaWeights.Count - 1] = delta * network.Activations[network.Activations.Count - 2].Transpose();
+            Activations[0] = data.Inputs;
+            Feedfoward();
 
-            for (int l = network.NumberOfLayer - 1; l > 0; l--)
+            Matrix delta = CostDerivative(data.Expected) * Neuron.SigmoidPrime(Zmatrices.Last());
+
+            deltaNablaBiases[deltaNablaBiases.Count - 1] = delta;
+            deltaNablaWeights[deltaNablaWeights.Count - 1] = delta * Activations[Activations.Count - 2].Transpose();
+
+            for (int l = NumberOfLayer - 1; l > 1; l--)
             {
-                delta = (network.Weights[l - 1].Transpose() * delta) * Neuron.SigmoidPrime(network.Zmatrices[l]);
-                nablaBiases[l - 1] = delta;
-                nablaWeights[l - 1] = delta * network.Activations[l - 1].Transpose();
+                delta = (Weights[l - 1].Transpose() * delta) * Neuron.SigmoidPrime(Zmatrices[l - 2]);
+                deltaNablaBiases[l - 2] = delta;
+                deltaNablaWeights[l - 2] = delta * Activations[l - 2].Transpose();
             }
 
-            return new DeltaNabla { Biases = nablaBiases, Weights = nablaWeights };
+            return new DeltaNabla { Biases = deltaNablaBiases, Weights = deltaNablaWeights };
         }
 
         /// <summary>
-        /// Evaluate the number of networks that success to give the expected answer
+        /// Evaluate the number of networks that succeed to give the expected answer
         /// </summary>
-        /// <param name="TestData">list of test networks</param>
+        /// <param name="TestData">list of data for tests</param>
         /// <returns>number of succeeded</returns>
-        private int Evaluate(List<Network> TestData)
+        private int Evaluate(List<Data> TestData)
         {
             int suceeded = 0;
-            foreach (Network network in TestData)
+            foreach (Data data in TestData)
             {
-                network.Biases = Biases;
-                network.Weights = Weights;
+                Trace.WriteLine($"Evaluation of {data.Id}");
 
-                network.Feedfoward();
+                Activations[0] = data.Inputs;
 
-                float[] arrans = network.Activations.Last().mat.Cast<float>().ToArray();
+                Feedfoward();
+
+                float[] arrans = Activations.Last().mat.Cast<float>().ToArray();
                 float maxans = arrans.Max();
                 int maxIndexAns = Array.IndexOf(arrans, maxans);
 
-                float[] arrexp = network.Expected.mat.Cast<float>().ToArray();
+                float[] arrexp = data.Expected.mat.Cast<float>().ToArray();
                 float maxexp = arrexp.Max();
                 int maxIndexExp = Array.IndexOf(arrexp, maxexp);
 
-                suceeded += maxIndexAns == maxIndexExp ? 1 : 0;
+                bool hasSucceded = maxIndexAns == maxIndexExp;
+
+                suceeded += hasSucceded ? 1 : 0;
+                Trace.WriteLine($"has succeded : {hasSucceded}");
             }
 
             return suceeded;
@@ -276,7 +262,7 @@ namespace NeuralNetwork
         /// Compute cost derivative : dCx/da
         /// </summary>
         /// <returns>dCx/da</returns>
-        private Matrix CostDerivative()
+        private Matrix CostDerivative(Matrix Expected)
         {
             return Activations.Last() - Expected;
         }

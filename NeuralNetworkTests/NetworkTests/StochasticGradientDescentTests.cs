@@ -12,49 +12,33 @@ namespace NeuralNetworkTests.NetworkTests
         public void StochasticGradientDescentNominalBehavior()
         {
             // Arrange
-            List<Network> trainingDatas = new List<Network>();
-            List<Network> testingDatas = new List<Network>();
+            List<Data> testingDatas = new List<Data>();
+            List<Data> trainingDatas = new List<Data>();
 
             Network network = new Network(new List<int> { 784, 16, 16, 10 });
 
             using (IDataLoader loader = new ImageLoader())
             {
-                List<int> hiddenLayersShape = new List<int> { 16, 16 };
+                string testingFolders = ".\\dataset\\";
 
-                string trainingFolders = ".\\dataset\\";
-
-                List<float[,]> expecteds = new List<float[,]> {
-                    new float[,] { {1},{0},{0},{0},{0},{0},{0},{0},{0},{0} },
-                    new float[,] { {0},{1},{0},{0},{0},{0},{0},{0},{0},{0} },
-                    new float[,] { {0},{0},{1},{0},{0},{0},{0},{0},{0},{0} },
-                    new float[,] { {0},{0},{0},{1},{0},{0},{0},{0},{0},{0} },
-                    new float[,] { {0},{0},{0},{0},{1},{0},{0},{0},{0},{0} },
-                    new float[,] { {0},{0},{0},{0},{0},{1},{0},{0},{0},{0} },
-                    new float[,] { {0},{0},{0},{0},{0},{0},{1},{0},{0},{0} },
-                    new float[,] { {0},{0},{0},{0},{0},{0},{0},{1},{0},{0} },
-                    new float[,] { {0},{0},{0},{0},{0},{0},{0},{0},{1},{0} },
-                    new float[,] { {0},{0},{0},{0},{0},{0},{0},{0},{0},{1} },
-                };
-
-                for (int i = 0; i < 10; i++)
+                List<Data> loadDatas(string folder)
                 {
-                    foreach (string file in Directory.GetFiles(trainingFolders + i + "\\"))
+                    List<Data> datas = new List<Data>();
+                    for (int i = 0; i < 10; i++)
                     {
-                        float[,] inputs = loader.Load(file);
-                        Network test = new Network(inputs, expecteds[i], hiddenLayersShape);
-                        testingDatas.Add(test);
+                        string path = folder + i + "\\";
+                        foreach (string file in Directory.GetFiles(path))
+                        {
+                            Data test = new Data { Id = file, Expected = Expected.Answers[i], Inputs = loader.Load(file) };
+                            datas.Add(test);
+                        }
                     }
+
+                    return datas;
                 }
 
-                for (int i = 0; i < 10; i++)
-                {
-                    foreach (string file in Directory.GetFiles(trainingFolders + i + "\\"))
-                    {
-                        float[,] inputs = loader.Load(file);
-                        Network train = new Network(inputs, expecteds[i], hiddenLayersShape);
-                        trainingDatas.Add(train);
-                    }
-                }
+                testingDatas = loadDatas(testingFolders);
+                trainingDatas = loadDatas(testingFolders);
             }
 
             // Act
