@@ -69,6 +69,10 @@ namespace NeuralNetwork
             Feedfoward();
         }
 
+        /// <summary>
+        /// Initialize a <see cref="Network"/> from a given size
+        /// </summary>
+        /// <param name="Sizes"></param>
         private void InitializeNetwork(List<int> Sizes)
         {
             NumberOfLayer = Sizes.Count;
@@ -76,9 +80,6 @@ namespace NeuralNetwork
             Zmatrices = new List<Matrix>();
             Biases = new List<Matrix>();
             Weights = new List<Matrix>();
-
-            Random rbiases = new Random();
-            Random rweights = new Random();
 
             // Initialize Activations
             foreach (int y in Sizes)
@@ -90,25 +91,25 @@ namespace NeuralNetwork
             foreach (int y in Sizes.Skip(1))
             {
                 Zmatrices.Add(new float[y, 1]);
-                var biases = new float[y, 1];
+                float[,] biases = new float[y, 1];
                 for (int i = 0; i < y; i++)
                 {
-                    biases[i, 0] = (float)rbiases.NextDouble();
+                    biases[i, 0] = (float)ThreadSafeRandom.ThisThreadsRandom.NextDouble();
                 }
                 Biases.Add(biases);
             }
 
             // Initialize Weights
-            foreach (var (x, y) in Sizes.SkipLast(1).Zip(Sizes.Skip(1)))
+            foreach ((int x, int y) in Sizes.SkipLast(1).Zip(Sizes.Skip(1)))
             {
                 // x => number of neuron in previous layer
                 // y => number of neuron in actual layer
-                var layer = new float[y, x];
-                for (var i = 0; i < y; i++)
+                float[,] layer = new float[y, x];
+                for (int i = 0; i < y; i++)
                 {
-                    for (var j = 0; j < x; j++)
+                    for (int j = 0; j < x; j++)
                     {
-                        layer[i, j] = (float)rweights.NextDouble();
+                        layer[i, j] = (float)ThreadSafeRandom.ThisThreadsRandom.NextDouble();
                     }
                 }
                 Weights.Add(layer);
@@ -130,17 +131,17 @@ namespace NeuralNetwork
         }
 
         /// <summary>
-        /// Train the newtmork with the stockastic gradient descent method
+        /// Train the <see cref="Network"/> with the stockastic gradient descent method
         /// It seeks a (at least local) minimum value of the cost error of the network
         /// </summary>
-        /// <param name="datas"></param>
-        /// <param name="generations"></param>
-        /// <param name="miniBatchSize"></param>
-        /// <param name="eta"></param>
-        /// <param name="TestData"></param>
+        /// <param name="datas">Inputs list</param>
+        /// <param name="generations">Number of generation that will train</param>
+        /// <param name="miniBatchSize">Size of a batch of data</param>
+        /// <param name="eta">Learning rate</param>
+        /// <param name="TestData">Data that will test the Network accuracy</param>
         public void StochasticGradientDescent(List<Data> datas, int generations, int miniBatchSize, float eta, List<Data> TestData = null)
         {
-            Console.WriteLine("beginning learing using the stochastic gradient descent method");
+            Console.WriteLine("begining learing using the stochastic gradient descent method");
 
             for (int j = 0; j < generations; j++)
             {
@@ -226,7 +227,7 @@ namespace NeuralNetwork
         }
 
         /// <summary>
-        /// Evaluate the number of networks that succeed to give the expected answer
+        /// Evaluate accuracy of the <see cref="Network"/> to give an expected answer
         /// </summary>
         /// <param name="TestData">list of data for tests</param>
         /// <returns>number of succeeded</returns>
@@ -259,8 +260,9 @@ namespace NeuralNetwork
         }
 
         /// <summary>
-        /// Compute cost derivative : dCx/da
+        /// Compute the cost derivative : dCx/da
         /// </summary>
+        /// <param name="Expected">Expected answer</param>
         /// <returns>dCx/da</returns>
         private Matrix CostDerivative(Matrix Expected)
         {
@@ -268,6 +270,9 @@ namespace NeuralNetwork
         }
     }
 
+    /// <summary>
+    /// Nabla structure for computation
+    /// </summary>
     struct DeltaNabla
     {
         public List<Matrix> Biases;

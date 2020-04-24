@@ -17,7 +17,7 @@ namespace NeuralNetwork
         /// Sigmoid function
         /// </summary>
         /// <param name="Z">data result of previous neuron layer</param>
-        /// <returns>a Matrix</returns>
+        /// <returns>a <see cref="Matrix"/></returns>
         public static Matrix Sigmoid(Matrix Z)
         {
             int maxi = Z.mat.GetLength(0);
@@ -48,7 +48,7 @@ namespace NeuralNetwork
         /// Derivative of a sigmoid function
         /// </summary>
         /// <param name="Z">data result of previous neuron layer</param>
-        /// <returns>a Matrix</returns>
+        /// <returns>a <see cref="Matrix"/></returns>
         public static Matrix SigmoidPrime(Matrix Z)
         {
             int maxi = Z.mat.GetLength(0);

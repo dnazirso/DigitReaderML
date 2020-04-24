@@ -5,18 +5,35 @@ using System.Threading;
 
 namespace Algebra
 {
+    /// <summary>
+    /// Thread safe random
+    /// </summary>
     public static class ThreadSafeRandom
     {
+        /// <summary>
+        /// local instance
+        /// </summary>
         [ThreadStatic] private static Random Local;
 
+        /// <summary>
+        /// thread safe random getter
+        /// </summary>
         public static Random ThisThreadsRandom
         {
             get { return Local ?? (Local = new Random(unchecked(Environment.TickCount * 31 + Thread.CurrentThread.ManagedThreadId))); }
         }
     }
 
+    /// <summary>
+    /// Method extensions
+    /// </summary>
     public static class MyExtensions
     {
+        /// <summary>
+        /// Shuffle the items of a list
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="list">list</param>
         public static void Shuffle<T>(this IList<T> list)
         {
             int n = list.Count;
@@ -30,6 +47,13 @@ namespace Algebra
             }
         }
 
+        /// <summary>
+        /// Reorganise a list by chunks of smaller lists
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="source">Source list</param>
+        /// <param name="chunkSize">Chunk size</param>
+        /// <returns></returns>
         public static List<List<T>> ChunkBy<T>(this List<T> source, int chunkSize)
         {
             return source
