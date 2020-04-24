@@ -1,12 +1,22 @@
-﻿using System;
+﻿using Algebra;
+using System;
 using System.Drawing;
 using System.IO;
 
 namespace DataLoaders
 {
+    /// <summary>
+    /// Loader speciic for image
+    /// </summary>
     public class ImageLoader : IDataLoader
     {
-        public float[,] Load(string path)
+        /// <summary>
+        /// Loads an image and transform its pixels into a bidimensional array
+        /// of numbers from their brightness. Each one going from 0.0 to 1.0
+        /// </summary>
+        /// <param name="path">path to a picture</param>
+        /// <returns>a bidimensional array of numbers</returns>
+        public Matrix Load(string path)
         {
             string exactPath = Path.GetFullPath(path);
 

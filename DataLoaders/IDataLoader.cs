@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Algebra;
+using System;
 
 namespace DataLoaders
 {
     public interface IDataLoader : IDisposable
     {
-        float[,] Load(string path);
+        Matrix Load(string path);
     }
 }

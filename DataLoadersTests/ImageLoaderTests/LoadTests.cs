@@ -1,4 +1,5 @@
-﻿using DataLoaders;
+﻿using Algebra;
+using DataLoaders;
 using Xunit;
 
 namespace DataLoadersTests.ImageLoaderTests
@@ -12,10 +13,10 @@ namespace DataLoadersTests.ImageLoaderTests
             IDataLoader loader = new ImageLoader();
 
             // Act
-            float[,] data = loader.Load("./ImageLoaderTests/1.png");
+            Matrix data = loader.Load("./ImageLoaderTests/1.png");
 
             // Assert
-            Assert.NotEmpty(data);
+            Assert.NotEmpty(data.mat);
         }
     }
 
