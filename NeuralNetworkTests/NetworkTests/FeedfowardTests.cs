@@ -5,21 +5,21 @@ using Xunit;
 
 namespace NeuralNetworkTests.NetworkTests
 {
-    public class FeedfowardTests
+    public class FeeddowardTests
     {
         [Fact]
-        public void FeedfowardNominalBehavior()
+        public void FeeddowardNominalBehavior()
         {
             // Arrange
             var hiddens = new List<int> { 8, 8, 1 };
-            var inputs = new float[,]
+            var inputs = new double[,]
             {
-                { 0.1f },
-                { 1f },
-                { 1f },
-                { 0.1f }
+                { 0.1d },
+                { 1d },
+                { 1d },
+                { 0.1d }
             };
-            var expectedAns = new float[,]
+            var expectedAns = new double[,]
             {
                 { 0 },
             };
@@ -33,7 +33,7 @@ namespace NeuralNetworkTests.NetworkTests
             network.Feedfoward();
 
             // Assert
-            Assert.True(network.Activations[1].mat.Cast<float>().All(a => a != 0));
+            Assert.True(network.Activations[1].mat.Cast<double>().All(a => a != 0));
         }
     }
 }

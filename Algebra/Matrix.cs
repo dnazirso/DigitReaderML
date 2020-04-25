@@ -7,28 +7,28 @@ namespace Algebra
         /// <summary>
         /// Represent the <see cref="Matrix"/> itslef
         /// </summary>
-        public readonly float[,] mat { get; }
+        public readonly double[,] mat { get; }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="mat"></param>
-        public Matrix(float[,] mat)
+        public Matrix(double[,] mat)
         {
             this.mat = mat;
         }
 
         /// <summary>
-        /// <see cref="Matrix"/> A = new float[,]{};
+        /// <see cref="Matrix"/> A = new double[,]{};
         /// </summary>
-        /// <param name="mat">a float[,]</param>
-        public static implicit operator Matrix(float[,] mat) => new Matrix(mat);
+        /// <param name="mat">a double[,]</param>
+        public static implicit operator Matrix(double[,] mat) => new Matrix(mat);
 
         /// <summary>
-        /// float[,] A = (<see cref="Matrix"/>)B;
+        /// double[,] A = (<see cref="Matrix"/>)B;
         /// </summary>
         /// <param name="mat">a Matrix</param>
-        public static explicit operator float[,](Matrix A) => A.mat;
+        public static explicit operator double[,](Matrix A) => A.mat;
 
         /// <summary>
         /// Transpose a <see cref="Matrix"/>
@@ -40,7 +40,7 @@ namespace Algebra
             int dimAi = mat.GetLength(0);
             int dimAj = mat.GetLength(1);
 
-            float[,] At = new float[dimAj, dimAi];
+            double[,] At = new double[dimAj, dimAi];
 
             for (int i = 0; i < mat.GetLength(0); i++)
             {
@@ -62,13 +62,13 @@ namespace Algebra
         {
             if (obj is Matrix)
             {
-                float[,] f = ((Matrix)obj).mat;
+                double[,] f = ((Matrix)obj).mat;
 
-                float[,] mat = this.mat;
+                double[,] mat = this.mat;
 
                 bool isEqual = mat.Rank == f.Rank
                     && Enumerable.Range(0, mat.Rank).All(dimension => mat.GetLength(dimension) == f.GetLength(dimension))
-                    && mat.Cast<float>().SequenceEqual(f.Cast<float>());
+                    && mat.Cast<double>().SequenceEqual(f.Cast<double>());
 
                 return isEqual;
             }
@@ -121,9 +121,9 @@ namespace Algebra
 
             int dimCn = dimAj > dimBi ? dimBi : dimAj;
 
-            float[,] C = new float[dimAi, dimBj];
+            double[,] C = new double[dimAi, dimBj];
 
-            float ComputeC(int i, int j, float cij = 0)
+            double ComputeC(int i, int j, double cij = 0)
             {
                 for (int n = 0; n < dimCn; n++)
                 {
@@ -149,12 +149,12 @@ namespace Algebra
         /// <param name="A"><see cref="Matrix"/> A</param>
         /// <param name="B">real B</param>
         /// <returns>a <see cref="Matrix"/> of same dimension than A</returns>
-        public static Matrix operator *(Matrix A, float B)
+        public static Matrix operator *(Matrix A, double B)
         {
             int dimAi = A.mat.GetLength(0);
             int dimAj = A.mat.GetLength(1);
 
-            float[,] C = new float[dimAi, dimAj];
+            double[,] C = new double[dimAi, dimAj];
 
             for (int i = 0; i < dimAi; i++)
             {
@@ -173,7 +173,7 @@ namespace Algebra
         /// <param name="A">real A</param>
         /// <param name="B"><see cref="Matrix"/> B</param>
         /// <returns>a <see cref="Matrix"/> of same dimension than B</returns>
-        public static Matrix operator *(float A, Matrix B)
+        public static Matrix operator *(double A, Matrix B)
         {
             return B * A;
         }
@@ -190,7 +190,7 @@ namespace Algebra
             int dimi = A.mat.GetLength(0);
             int dimj = A.mat.GetLength(1);
 
-            float[,] C = new float[dimi, dimj];
+            double[,] C = new double[dimi, dimj];
 
             for (int i = 0; i < dimi; i++)
             {
@@ -215,7 +215,7 @@ namespace Algebra
             int dimi = A.mat.GetLength(0);
             int dimj = A.mat.GetLength(1);
 
-            float[,] C = new float[dimi, dimj];
+            double[,] C = new double[dimi, dimj];
 
             for (int i = 0; i < dimi; i++)
             {

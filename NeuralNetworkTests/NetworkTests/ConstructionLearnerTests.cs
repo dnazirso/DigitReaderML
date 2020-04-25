@@ -12,14 +12,14 @@ namespace NeuralNetworkTests.NetworkTests
         {
             // Arrange
             var hiddens = new List<int> { 8, 8, 1 };
-            var inputs = new float[,]
+            var inputs = new double[,]
             {
-                { 0.1f },
-                { 1f },
-                { 1f },
-                { 0.1f }
+                { 0.1d },
+                { 1d },
+                { 1d },
+                { 0.1d }
             };
-            var expectedAns = new float[,]
+            var expectedAns = new double[,]
             {
                 { 0 },
             };
@@ -32,7 +32,7 @@ namespace NeuralNetworkTests.NetworkTests
             network.Activations[0] = inputs;
 
             // Assert
-            Assert.True(network.Activations[0].mat.Cast<float>().SequenceEqual(inputs.Cast<float>()));
+            Assert.True(network.Activations[0].mat.Cast<double>().SequenceEqual(inputs.Cast<double>()));
         }
     }
 }

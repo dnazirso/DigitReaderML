@@ -51,7 +51,7 @@ namespace NeuralNetwork
         /// <param name="Inputs">Input values</param>
         /// <param name="Weights">Weight matrises from previous learning</param>
         /// <param name="Biases">Biases matrises from previous learning</param>
-        public Network(float[,] Inputs, List<float[,]> Weights, List<float[,]> Biases)
+        public Network(double[,] Inputs, List<double[,]> Weights, List<double[,]> Biases)
         {
             List<Matrix> biases = Biases.Select(b => (Matrix)b).ToList();
 
@@ -59,7 +59,7 @@ namespace NeuralNetwork
 
             this.Biases = biases;
 
-            List<Matrix> zeros = biases.Select(b => new Matrix(new float[b.mat.GetLength(0), b.mat.GetLength(1)])).ToList();
+            List<Matrix> zeros = biases.Select(b => new Matrix(new double[b.mat.GetLength(0), b.mat.GetLength(1)])).ToList();
 
             Activations = new List<Matrix> { Inputs };
             Activations.AddRange(new List<Matrix>(zeros));
@@ -84,17 +84,17 @@ namespace NeuralNetwork
             // Initialize Activations
             foreach (int y in Sizes)
             {
-                Activations.Add(new float[y, 1]);
+                Activations.Add(new double[y, 1]);
             }
 
             // Initialize Biases and Zmatrices
             foreach (int y in Sizes.Skip(1))
             {
-                Zmatrices.Add(new float[y, 1]);
-                float[,] biases = new float[y, 1];
+                Zmatrices.Add(new double[y, 1]);
+                double[,] biases = new double[y, 1];
                 for (int i = 0; i < y; i++)
                 {
-                    biases[i, 0] = (float)ThreadSafeRandom.ThisThreadsRandom.NextDouble();
+                    biases[i, 0] = (double)ThreadSafeRandom.ThisThreadsRandom.NextDouble();
                 }
                 Biases.Add(biases);
             }
@@ -104,12 +104,12 @@ namespace NeuralNetwork
             {
                 // x => number of neuron in previous layer
                 // y => number of neuron in actual layer
-                float[,] layer = new float[y, x];
+                double[,] layer = new double[y, x];
                 for (int i = 0; i < y; i++)
                 {
                     for (int j = 0; j < x; j++)
                     {
-                        layer[i, j] = (float)ThreadSafeRandom.ThisThreadsRandom.NextDouble();
+                        layer[i, j] = (double)ThreadSafeRandom.ThisThreadsRandom.NextDouble();
                     }
                 }
                 Weights.Add(layer);
@@ -139,7 +139,7 @@ namespace NeuralNetwork
         /// <param name="miniBatchSize">Size of a batch of data</param>
         /// <param name="eta">Learning rate</param>
         /// <param name="TestData">Data that will test the Network accuracy</param>
-        public void StochasticGradientDescent(List<Data> datas, int generations, int miniBatchSize, float eta, List<Data> TestData = null)
+        public void StochasticGradientDescent(List<Data> datas, int generations, int miniBatchSize, double eta, List<Data> TestData = null)
         {
             Console.WriteLine("begining learing using the stochastic gradient descent method");
 
@@ -172,12 +172,12 @@ namespace NeuralNetwork
         /// </summary>
         /// <param name="miniBatch">small batch of datas</param>
         /// <param name="eta">leaning rate</param>
-        private void UpdateMiniBatch(List<Data> miniBatch, float eta)
+        private void UpdateMiniBatch(List<Data> miniBatch, double eta)
         {
-            List<Matrix> nablaBiases = Biases.Select(b => new Matrix(new float[b.mat.GetLength(0), b.mat.GetLength(1)])).ToList();
-            List<Matrix> nablaWeights = Weights.Select(w => new Matrix(new float[w.mat.GetLength(0), w.mat.GetLength(1)])).ToList();
+            List<Matrix> nablaBiases = Biases.Select(b => new Matrix(new double[b.mat.GetLength(0), b.mat.GetLength(1)])).ToList();
+            List<Matrix> nablaWeights = Weights.Select(w => new Matrix(new double[w.mat.GetLength(0), w.mat.GetLength(1)])).ToList();
 
-            float K = eta / miniBatch.Count;
+            double K = eta / miniBatch.Count;
 
             for (int n = 0; n < miniBatch.Count; n++)
             {
@@ -205,22 +205,22 @@ namespace NeuralNetwork
         {
             Trace.WriteLine($"Backpropagation on {data.Id}");
 
-            List<Matrix> deltaNablaBiases = Biases.Select(b => new Matrix(new float[b.mat.GetLength(0), b.mat.GetLength(1)])).ToList();
-            List<Matrix> deltaNablaWeights = Weights.Select(w => new Matrix(new float[w.mat.GetLength(0), w.mat.GetLength(1)])).ToList();
+            List<Matrix> deltaNablaBiases = Biases.Select(b => new Matrix(new double[b.mat.GetLength(0), b.mat.GetLength(1)])).ToList();
+            List<Matrix> deltaNablaWeights = Weights.Select(w => new Matrix(new double[w.mat.GetLength(0), w.mat.GetLength(1)])).ToList();
 
             Activations[0] = data.Inputs;
             Feedfoward();
 
-            Matrix delta = CostDerivative(data.Expected) * Neuron.SigmoidPrime(Zmatrices.Last());
+            Matrix delta = CostDerivative(data.Expected) * Neuron.SigmoidPrime(Zmatrices[^1]);
 
             deltaNablaBiases[^1] = delta;
-            deltaNablaWeights[^1] = delta * Activations[Activations.Count - 2].Transpose();
+            deltaNablaWeights[^1] = delta * Activations[^2].Transpose();
 
-            for (int l = NumberOfLayer - 1; l > 1; l--)
+            for (int l = NumberOfLayer - 2; l > 0; l--)
             {
-                delta = (Weights[l - 1].Transpose() * delta) * Neuron.SigmoidPrime(Zmatrices[l - 2]);
-                deltaNablaBiases[l - 2] = delta;
-                deltaNablaWeights[l - 2] = delta * Activations[l - 2].Transpose();
+                delta = (Weights[l].Transpose() * delta) * Neuron.SigmoidPrime(Zmatrices[l - 1]);
+                deltaNablaBiases[l - 1] = delta;
+                deltaNablaWeights[l - 1] = delta * Activations[l - 1].Transpose();
             }
 
             return new DeltaNabla { Biases = deltaNablaBiases, Weights = deltaNablaWeights };
@@ -242,12 +242,12 @@ namespace NeuralNetwork
 
                 Feedfoward();
 
-                float[] arrans = Activations.Last().mat.Cast<float>().ToArray();
-                float maxans = arrans.Max();
+                double[] arrans = Activations.Last().mat.Cast<double>().ToArray();
+                double maxans = arrans.Max();
                 int maxIndexAns = Array.IndexOf(arrans, maxans);
 
-                float[] arrexp = data.Expected.mat.Cast<float>().ToArray();
-                float maxexp = arrexp.Max();
+                double[] arrexp = data.Expected.mat.Cast<double>().ToArray();
+                double maxexp = arrexp.Max();
                 int maxIndexExp = Array.IndexOf(arrexp, maxexp);
 
                 bool hasSucceded = maxIndexAns == maxIndexExp;

@@ -9,16 +9,16 @@ namespace AlgebraTests.MatrixTests
         public void DotNominalBehavior()
         {
             // Arrange
-            Matrix A = new float[,]
+            Matrix A = new double[,]
             {
-                { 1f, 2f },
-                { 3f, 4f }
+                { 1d, 2d },
+                { 3d, 4d }
             };
 
-            Matrix B = new float[,]
+            Matrix B = new double[,]
             {
-                { 1f, 0f },
-                { 0f, 1f },
+                { 1d, 0d },
+                { 0d, 1d },
             };
 
             // Act
@@ -32,23 +32,23 @@ namespace AlgebraTests.MatrixTests
         public void DotVector()
         {
             // Arrange
-            Matrix A = new float[,]
+            Matrix A = new double[,]
             {
-                { 1f, 2f ,3f },
-                { 4f, 5f ,6f }
+                { 1d, 2d ,3d },
+                { 4d, 5d ,6d }
             };
 
-            Matrix B = new float[,]
+            Matrix B = new double[,]
             {
-                { 1f },
-                { 1f },
-                { 1f }
+                { 1d },
+                { 1d },
+                { 1d }
             };
 
-            Matrix expected = new float[,]
+            Matrix expected = new double[,]
             {
-                { 6f },
-                { 15f }
+                { 6d },
+                { 15d }
             };
 
             // Act
@@ -62,18 +62,18 @@ namespace AlgebraTests.MatrixTests
         public void DotReal()
         {
             // Arrange
-            Matrix A = new float[,]
+            Matrix A = new double[,]
             {
-                { 1f, 2f ,3f },
-                { 4f, 5f ,6f }
+                { 1d, 2d ,3d },
+                { 4d, 5d ,6d }
             };
 
-            float B = 2;
+            double B = 2;
 
-            Matrix expected = new float[,]
+            Matrix expected = new double[,]
             {
-                { 2f, 4f ,6f },
-                { 8f, 10f ,12f }
+                { 2d, 4d ,6d },
+                { 8d, 10d ,12d }
             };
 
             // Act
