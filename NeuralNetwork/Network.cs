@@ -184,15 +184,15 @@ namespace NeuralNetwork
                 DeltaNabla deltaNabla = BackPropagation(miniBatch[n]);
                 for (int l = 0; l < NumberOfLayer - 1; l++)
                 {
-                    nablaBiases[l] = nablaBiases[l] + deltaNabla.Biases[l];
-                    nablaWeights[l] = nablaWeights[l] + deltaNabla.Weights[l];
+                    nablaBiases[l] += deltaNabla.Biases[l];
+                    nablaWeights[l] += deltaNabla.Weights[l];
                 }
             }
 
             for (int l = 0; l < NumberOfLayer - 1; l++)
             {
-                Biases[l] = Biases[l] - K * nablaBiases[l];
-                Weights[l] = Weights[l] - K * nablaWeights[l];
+                Biases[l] -= K * nablaBiases[l];
+                Weights[l] -= K * nablaWeights[l];
             }
         }
 
@@ -213,8 +213,8 @@ namespace NeuralNetwork
 
             Matrix delta = CostDerivative(data.Expected) * Neuron.SigmoidPrime(Zmatrices.Last());
 
-            deltaNablaBiases[deltaNablaBiases.Count - 1] = delta;
-            deltaNablaWeights[deltaNablaWeights.Count - 1] = delta * Activations[Activations.Count - 2].Transpose();
+            deltaNablaBiases[^1] = delta;
+            deltaNablaWeights[^1] = delta * Activations[Activations.Count - 2].Transpose();
 
             for (int l = NumberOfLayer - 1; l > 1; l--)
             {
