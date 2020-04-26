@@ -45,7 +45,7 @@ namespace DigitReaderML
                 trainingDatas = loadDatas(trainingFolders);
             }
 
-            network.StochasticGradientDescent(testingDatas, 30, 10, 3.0f, testingDatas);
+            network.StochasticGradientDescent(trainingDatas, 30, 10, 3.0f, testingDatas);
         }
     }
 }
