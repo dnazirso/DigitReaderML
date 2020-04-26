@@ -29,8 +29,7 @@ namespace NeuralNetworkTests.NetworkTests
             Network network = new Network(size);
 
             // Act
-            network.Activations[0] = inputs;
-            network.Feedfoward();
+            network.Feedfoward(inputs);
 
             // Assert
             Assert.True(network.Activations[1].mat.Cast<double>().All(a => a != 0));

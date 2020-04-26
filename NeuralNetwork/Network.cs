@@ -59,14 +59,15 @@ namespace NeuralNetwork
 
             this.Biases = biases;
 
-            List<Matrix> zeros = biases.Select(b => new Matrix(new double[b.mat.GetLength(0), b.mat.GetLength(1)])).ToList();
+            List<Matrix> biasesShapes = biases.Select(b => new Matrix(new double[b.mat.GetLength(0), b.mat.GetLength(1)])).ToList();
+            Matrix inputsShape = new Matrix(new double[Inputs.GetLength(0), Inputs.GetLength(1)]);
 
-            Activations = new List<Matrix> { Inputs };
-            Activations.AddRange(new List<Matrix>(zeros));
+            Activations = new List<Matrix> { inputsShape };
+            Activations.AddRange(new List<Matrix>(biasesShapes));
 
-            Zmatrices = new List<Matrix>(zeros);
+            Zmatrices = new List<Matrix>(biasesShapes);
 
-            Feedfoward();
+            Feedfoward(Inputs);
         }
 
         /// <summary>
@@ -121,12 +122,14 @@ namespace NeuralNetwork
         /// </summary>
         /// <param name="a">previous data results of a of all layers</param>
         /// <returns>data results of a of all layers</returns>
-        public void Feedfoward()
+        public void Feedfoward(Matrix inputs)
         {
-            for (int l = 1; l < NumberOfLayer; l++)
+            Zmatrices[0] = (Weights[0] * inputs) + Biases[0];
+            Activations[0] = inputs;
+            for (int l = 0; l < NumberOfLayer - 1; l++)
             {
-                Zmatrices[l - 1] = (Weights[l - 1] * Activations[l - 1]) + Biases[l - 1];
-                Activations[l] = Neuron.Sigmoid(Zmatrices[l - 1]);
+                Zmatrices[l] = (Weights[l] * Activations[l]) + Biases[l];
+                Activations[l + 1] = Neuron.Sigmoid(Zmatrices[l]);
             }
         }
 
@@ -208,8 +211,7 @@ namespace NeuralNetwork
             List<Matrix> deltaNablaBiases = Biases.Select(b => new Matrix(new double[b.mat.GetLength(0), b.mat.GetLength(1)])).ToList();
             List<Matrix> deltaNablaWeights = Weights.Select(w => new Matrix(new double[w.mat.GetLength(0), w.mat.GetLength(1)])).ToList();
 
-            Activations[0] = data.Inputs;
-            Feedfoward();
+            Feedfoward(data.Inputs);
 
             Matrix delta = CostDerivative(data.Expected) * Neuron.SigmoidPrime(Zmatrices[^1]);
 
@@ -238,9 +240,7 @@ namespace NeuralNetwork
             {
                 Trace.WriteLine($"Evaluation of {data.Id}");
 
-                Activations[0] = data.Inputs;
-
-                Feedfoward();
+                Feedfoward(data.Inputs);
 
                 double[] arrans = Activations.Last().mat.Cast<double>().ToArray();
                 double maxans = arrans.Max();
@@ -266,7 +266,7 @@ namespace NeuralNetwork
         /// <returns>dCx/da</returns>
         private Matrix CostDerivative(Matrix Expected)
         {
-            return Activations.Last() - Expected;
+            return Activations[^1] - Expected;
         }
     }
 
