@@ -44,9 +44,9 @@ namespace NeuralNetwork
             NumberOfLayer = Sizes.Count;
             Biases = new Matrix[Sizes.Count - 1];
             Weights = new Matrix[Sizes.Count - 1];
+            int n = 0;
 
             // Initialize Biases
-            int n = 0;
             foreach (int y in Sizes.Skip(1))
             {
                 double[,] biases = new double[y, 1];
@@ -58,8 +58,9 @@ namespace NeuralNetwork
                 n++;
             }
 
+            n = 0;
+
             // Initialize Weights
-            int m = 0;
             foreach ((int x, int y) in Sizes.SkipLast(1).Zip(Sizes.Skip(1)))
             {
                 // x => number of neuron in previous layer
@@ -72,8 +73,8 @@ namespace NeuralNetwork
                         layer[i, j] = ThreadSafeRandom.ThisThreadsRandom.NextDouble();
                     }
                 }
-                Weights[m] = layer;
-                m++;
+                Weights[n] = layer;
+                n++;
             }
         }
 
@@ -93,6 +94,7 @@ namespace NeuralNetwork
                 zmatrices[l] = (Weights[l] * activations[l]) + Biases[l];
                 activations[l + 1] = Neuron.Sigmoid(zmatrices[l]);
             }
+
             return new Neuron { Activations = activations, Zmatrices = zmatrices };
         }
 

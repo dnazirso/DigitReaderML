@@ -3,15 +3,18 @@ using System;
 
 namespace NeuralNetwork
 {
-    public class Neuron
+    /// <summary>
+    /// Contain Neuron operations and intermediary <see cref="Matrix"/>s
+    /// </summary>
+    public struct Neuron
     {
         /// <summary>
-        /// Intermediary Matrix for Activations computation
+        /// List of Activations <see cref="Matrix"/>s
         /// </summ
         public Matrix[] Activations;
 
         /// <summary>
-        /// List of Activations matrises
+        /// Intermediary <see cref="Matrix"/>s for Activations computation
         /// </summary>
         public Matrix[] Zmatrices;
 
@@ -44,7 +47,6 @@ namespace NeuralNetwork
 
             return A;
         }
-
 
         /// <summary>
         /// Derivative of a sigmoid function
