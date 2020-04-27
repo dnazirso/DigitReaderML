@@ -44,19 +44,5 @@ namespace NeuralNetworkTests.NetworkTests
             // Assert
             Assert.NotEmpty(network.Weights);
         }
-
-        [Fact]
-        public void NetworkHasNonEmptyActivationVectors()
-        {
-            // Arrange
-            var sizes = new List<int> { 3, 2, 1 };
-
-            // Act
-            var network = new Network(sizes);
-
-            // Assert
-            Assert.NotEmpty(network.Activations);
-        }
-
     }
 }

@@ -12,16 +12,6 @@ namespace NeuralNetwork
     public class Network
     {
         /// <summary>
-        /// Intermediary Matrix for Activations computation
-        /// </summary>
-        private List<Matrix> Zmatrices { get; set; }
-
-        /// <summary>
-        /// List of Activations matrises
-        /// </summary>
-        public List<Matrix> Activations { get; private set; }
-
-        /// <summary>
         /// List of Biases vectors
         /// </summary>
         public List<Matrix> Biases { get; private set; }
@@ -62,11 +52,6 @@ namespace NeuralNetwork
             List<Matrix> biasesShapes = biases.Select(b => new Matrix(new double[b.mat.GetLength(0), b.mat.GetLength(1)])).ToList();
             Matrix inputsShape = new Matrix(new double[Inputs.GetLength(0), Inputs.GetLength(1)]);
 
-            Activations = new List<Matrix> { inputsShape };
-            Activations.AddRange(new List<Matrix>(biasesShapes));
-
-            Zmatrices = new List<Matrix>(biasesShapes);
-
             Feedfoward(Inputs);
         }
 
@@ -77,21 +62,12 @@ namespace NeuralNetwork
         private void InitializeNetwork(List<int> Sizes)
         {
             NumberOfLayer = Sizes.Count;
-            Activations = new List<Matrix>();
-            Zmatrices = new List<Matrix>();
             Biases = new List<Matrix>();
             Weights = new List<Matrix>();
-
-            // Initialize Activations
-            foreach (int y in Sizes)
-            {
-                Activations.Add(new double[y, 1]);
-            }
 
             // Initialize Biases and Zmatrices
             foreach (int y in Sizes.Skip(1))
             {
-                Zmatrices.Add(new double[y, 1]);
                 double[,] biases = new double[y, 1];
                 for (int i = 0; i < y; i++)
                 {
@@ -122,15 +98,18 @@ namespace NeuralNetwork
         /// </summary>
         /// <param name="a">previous data results of a of all layers</param>
         /// <returns>data results of a of all layers</returns>
-        public void Feedfoward(Matrix inputs)
+        public Neuron Feedfoward(Matrix inputs)
         {
-            Zmatrices[0] = (Weights[0] * inputs) + Biases[0];
-            Activations[0] = inputs;
+            Matrix[] activations = new Matrix[NumberOfLayer];
+            Matrix[] zmatrices = new Matrix[NumberOfLayer - 1];
+            zmatrices[0] = (Weights[0] * inputs) + Biases[0];
+            activations[0] = inputs;
             for (int l = 0; l < NumberOfLayer - 1; l++)
             {
-                Zmatrices[l] = (Weights[l] * Activations[l]) + Biases[l];
-                Activations[l + 1] = Neuron.Sigmoid(Zmatrices[l]);
+                zmatrices[l] = (Weights[l] * activations[l]) + Biases[l];
+                activations[l + 1] = Neuron.Sigmoid(zmatrices[l]);
             }
+            return new Neuron { Activations = activations, Zmatrices = zmatrices };
         }
 
         /// <summary>
@@ -177,8 +156,8 @@ namespace NeuralNetwork
         /// <param name="eta">leaning rate</param>
         private void UpdateMiniBatch(List<Data> miniBatch, double eta)
         {
-            List<Matrix> nablaBiases = Biases.Select(b => new Matrix(new double[b.mat.GetLength(0), b.mat.GetLength(1)])).ToList();
-            List<Matrix> nablaWeights = Weights.Select(w => new Matrix(new double[w.mat.GetLength(0), w.mat.GetLength(1)])).ToList();
+            Matrix[] nablaBiases = Biases.Select(b => new Matrix(new double[b.mat.GetLength(0), b.mat.GetLength(1)])).ToArray();
+            Matrix[] nablaWeights = Weights.Select(w => new Matrix(new double[w.mat.GetLength(0), w.mat.GetLength(1)])).ToArray();
 
             double K = eta / miniBatch.Count;
 
@@ -208,21 +187,21 @@ namespace NeuralNetwork
         {
             Trace.WriteLine($"Backpropagation on {data.Id}");
 
-            List<Matrix> deltaNablaBiases = Biases.Select(b => new Matrix(new double[b.mat.GetLength(0), b.mat.GetLength(1)])).ToList();
-            List<Matrix> deltaNablaWeights = Weights.Select(w => new Matrix(new double[w.mat.GetLength(0), w.mat.GetLength(1)])).ToList();
+            Matrix[] deltaNablaBiases = Biases.Select(b => new Matrix(new double[b.mat.GetLength(0), b.mat.GetLength(1)])).ToArray();
+            Matrix[] deltaNablaWeights = Weights.Select(w => new Matrix(new double[w.mat.GetLength(0), w.mat.GetLength(1)])).ToArray();
 
-            Feedfoward(data.Inputs);
+            Neuron neurons = Feedfoward(data.Inputs);
 
-            Matrix delta = CostDerivative(data.Expected) * Neuron.SigmoidPrime(Zmatrices[^1]);
+            Matrix delta = CostDerivative(neurons, data.Expected) * Neuron.SigmoidPrime(neurons.Zmatrices[^1]);
 
             deltaNablaBiases[^1] = delta;
-            deltaNablaWeights[^1] = delta * Activations[^2].Transpose();
+            deltaNablaWeights[^1] = delta * neurons.Activations[^2].Transpose();
 
             for (int l = NumberOfLayer - 2; l > 0; l--)
             {
-                delta = (Weights[l].Transpose() * delta) * Neuron.SigmoidPrime(Zmatrices[l - 1]);
+                delta = (Weights[l].Transpose() * delta) * Neuron.SigmoidPrime(neurons.Zmatrices[l - 1]);
                 deltaNablaBiases[l - 1] = delta;
-                deltaNablaWeights[l - 1] = delta * Activations[l - 1].Transpose();
+                deltaNablaWeights[l - 1] = delta * neurons.Activations[l - 1].Transpose();
             }
 
             return new DeltaNabla { Biases = deltaNablaBiases, Weights = deltaNablaWeights };
@@ -240,9 +219,9 @@ namespace NeuralNetwork
             {
                 Trace.WriteLine($"Evaluation of {data.Id}");
 
-                Feedfoward(data.Inputs);
+                Neuron neurons = Feedfoward(data.Inputs);
 
-                double[] arrans = Activations.Last().mat.Cast<double>().ToArray();
+                double[] arrans = neurons.Activations.Last().mat.Cast<double>().ToArray();
                 double maxans = arrans.Max();
                 int maxIndexAns = Array.IndexOf(arrans, maxans);
 
@@ -264,9 +243,9 @@ namespace NeuralNetwork
         /// </summary>
         /// <param name="Expected">Expected answer</param>
         /// <returns>dCx/da</returns>
-        private Matrix CostDerivative(Matrix Expected)
+        private Matrix CostDerivative(Neuron neurons, Matrix Expected)
         {
-            return Activations[^1] - Expected;
+            return neurons.Activations[^1] - Expected;
         }
     }
 
@@ -275,7 +254,7 @@ namespace NeuralNetwork
     /// </summary>
     struct DeltaNabla
     {
-        public List<Matrix> Biases;
-        public List<Matrix> Weights;
+        public Matrix[] Biases;
+        public Matrix[] Weights;
     }
 }

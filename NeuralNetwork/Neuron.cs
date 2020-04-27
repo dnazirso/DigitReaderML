@@ -3,8 +3,17 @@ using System;
 
 namespace NeuralNetwork
 {
-    public static class Neuron
+    public class Neuron
     {
+        /// <summary>
+        /// Intermediary Matrix for Activations computation
+        /// </summ
+        public Matrix[] Activations;
+
+        /// <summary>
+        /// List of Activations matrises
+        /// </summary>
+        public Matrix[] Zmatrices;
 
         /// <summary>
         /// Sigmoid function

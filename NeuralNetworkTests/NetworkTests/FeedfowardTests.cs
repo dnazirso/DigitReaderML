@@ -29,10 +29,10 @@ namespace NeuralNetworkTests.NetworkTests
             Network network = new Network(size);
 
             // Act
-            network.Feedfoward(inputs);
+            var neurons = network.Feedfoward(inputs);
 
             // Assert
-            Assert.True(network.Activations[1].mat.Cast<double>().All(a => a != 0));
+            Assert.True(neurons.Activations[1].mat.Cast<double>().All(a => a != 0));
         }
     }
 }
