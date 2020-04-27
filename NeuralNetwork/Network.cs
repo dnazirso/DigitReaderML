@@ -87,8 +87,8 @@ namespace NeuralNetwork
         {
             Matrix[] activations = new Matrix[NumberOfLayer];
             Matrix[] zmatrices = new Matrix[NumberOfLayer - 1];
-            zmatrices[0] = (Weights[0] * inputs) + Biases[0];
             activations[0] = inputs;
+
             for (int l = 0; l < NumberOfLayer - 1; l++)
             {
                 zmatrices[l] = (Weights[l] * activations[l]) + Biases[l];
@@ -178,7 +178,7 @@ namespace NeuralNetwork
 
             Neuron neurons = Feedfoward(data.Inputs);
 
-            Matrix delta = CostDerivative(neurons, data.Expected) * Neuron.SigmoidPrime(neurons.Zmatrices[^1]);
+            Matrix delta = CostDerivative(neurons.Activations[^1], data.Expected) * Neuron.SigmoidPrime(neurons.Zmatrices[^1]);
 
             deltaNablaBiases[^1] = delta;
             deltaNablaWeights[^1] = delta * neurons.Activations[^2].Transpose();
@@ -229,9 +229,9 @@ namespace NeuralNetwork
         /// </summary>
         /// <param name="Expected">Expected answer</param>
         /// <returns>dCx/da</returns>
-        private Matrix CostDerivative(Neuron neurons, Matrix Expected)
+        private Matrix CostDerivative(Matrix output, Matrix Expected)
         {
-            return neurons.Activations[^1] - Expected;
+            return output - Expected;
         }
     }
 
