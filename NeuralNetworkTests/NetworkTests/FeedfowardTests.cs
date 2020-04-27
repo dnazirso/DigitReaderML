@@ -8,10 +8,9 @@ namespace NeuralNetworkTests.NetworkTests
     public class FeeddowardTests
     {
         [Fact]
-        public void FeeddowardNominalBehavior()
+        public void FeedowardNominalBehavior()
         {
             // Arrange
-            var hiddens = new List<int> { 8, 8, 1 };
             var inputs = new double[,]
             {
                 { 0.1d },
@@ -24,8 +23,7 @@ namespace NeuralNetworkTests.NetworkTests
                 { 0 },
             };
             var data = new Data { Inputs = inputs, Expected = expectedAns, Id = "test" };
-            var size = new List<int> { inputs.Length };
-            size.AddRange(hiddens);
+            var size = new List<int> { inputs.GetLength(0), 8, 8, 1 };
             Network network = new Network(size);
 
             // Act

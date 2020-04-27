@@ -14,12 +14,12 @@ namespace NeuralNetwork
         /// <summary>
         /// List of Biases vectors
         /// </summary>
-        public List<Matrix> Biases { get; private set; }
+        public Matrix[] Biases { get; private set; }
 
         /// <summary>
         /// List of Weights matrises
         /// </summary>
-        public List<Matrix> Weights { get; private set; }
+        public Matrix[] Weights { get; private set; }
 
         /// <summary>
         /// Number of layers
@@ -36,47 +36,30 @@ namespace NeuralNetwork
         }
 
         /// <summary>
-        /// Neural network constructor for use
-        /// </summary>
-        /// <param name="Inputs">Input values</param>
-        /// <param name="Weights">Weight matrises from previous learning</param>
-        /// <param name="Biases">Biases matrises from previous learning</param>
-        public Network(double[,] Inputs, List<double[,]> Weights, List<double[,]> Biases)
-        {
-            List<Matrix> biases = Biases.Select(b => (Matrix)b).ToList();
-
-            this.Weights = Weights.Select(w => (Matrix)w).ToList();
-
-            this.Biases = biases;
-
-            List<Matrix> biasesShapes = biases.Select(b => new Matrix(new double[b.mat.GetLength(0), b.mat.GetLength(1)])).ToList();
-            Matrix inputsShape = new Matrix(new double[Inputs.GetLength(0), Inputs.GetLength(1)]);
-
-            Feedfoward(Inputs);
-        }
-
-        /// <summary>
         /// Initialize a <see cref="Network"/> from a given size
         /// </summary>
         /// <param name="Sizes"></param>
         private void InitializeNetwork(List<int> Sizes)
         {
             NumberOfLayer = Sizes.Count;
-            Biases = new List<Matrix>();
-            Weights = new List<Matrix>();
+            Biases = new Matrix[Sizes.Count - 1];
+            Weights = new Matrix[Sizes.Count - 1];
 
-            // Initialize Biases and Zmatrices
+            // Initialize Biases
+            int n = 0;
             foreach (int y in Sizes.Skip(1))
             {
                 double[,] biases = new double[y, 1];
                 for (int i = 0; i < y; i++)
                 {
-                    biases[i, 0] = (double)ThreadSafeRandom.ThisThreadsRandom.NextDouble();
+                    biases[i, 0] = ThreadSafeRandom.ThisThreadsRandom.NextDouble();
                 }
-                Biases.Add(biases);
+                Biases[n] = biases;
+                n++;
             }
 
             // Initialize Weights
+            int m = 0;
             foreach ((int x, int y) in Sizes.SkipLast(1).Zip(Sizes.Skip(1)))
             {
                 // x => number of neuron in previous layer
@@ -86,10 +69,11 @@ namespace NeuralNetwork
                 {
                     for (int j = 0; j < x; j++)
                     {
-                        layer[i, j] = (double)ThreadSafeRandom.ThisThreadsRandom.NextDouble();
+                        layer[i, j] = ThreadSafeRandom.ThisThreadsRandom.NextDouble();
                     }
                 }
-                Weights.Add(layer);
+                Weights[m] = layer;
+                m++;
             }
         }
 

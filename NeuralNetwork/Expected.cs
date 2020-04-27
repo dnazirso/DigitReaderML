@@ -11,7 +11,7 @@ namespace NeuralNetwork
         /// <summary>
         /// Answers list
         /// </summary>
-        public static readonly List<Matrix> Answers = new List<Matrix> {
+        public static readonly Matrix[] Answers = new Matrix[] {
                     new double[,] { {1},{0},{0},{0},{0},{0},{0},{0},{0},{0} },
                     new double[,] { {0},{1},{0},{0},{0},{0},{0},{0},{0},{0} },
                     new double[,] { {0},{0},{1},{0},{0},{0},{0},{0},{0},{0} },
