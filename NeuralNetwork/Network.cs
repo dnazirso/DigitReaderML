@@ -52,7 +52,7 @@ namespace NeuralNetwork
                 double[,] biases = new double[y, 1];
                 for (int i = 0; i < y; i++)
                 {
-                    biases[i, 0] = ThreadSafeRandom.ThisThreadsRandom.NextDouble();
+                    biases[i, 0] = ThreadSafeRandom.NormalRand();
                 }
                 Biases[n] = biases;
                 n++;
@@ -70,7 +70,7 @@ namespace NeuralNetwork
                 {
                     for (int j = 0; j < x; j++)
                     {
-                        layer[i, j] = ThreadSafeRandom.ThisThreadsRandom.NextDouble();
+                        layer[i, j] = ThreadSafeRandom.NormalRand();
                     }
                 }
                 Weights[n] = layer;
