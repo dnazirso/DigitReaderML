@@ -9,22 +9,22 @@ namespace AlgebraTests.MatrixTests
         public void MinusNominalBehavior()
         {
             // Arrange
-            Matrix A = new double[,]
+            Matrix A = new float[,]
             {
-                { 1d, 2d },
-                { 3d, 4d }
+                { 1f, 2f },
+                { 3f, 4f }
             };
 
-            Matrix B = new double[,]
+            Matrix B = new float[,]
             {
-                { 1d, 0d },
-                { 0d, 1d },
+                { 1f, 0f },
+                { 0f, 1f },
             };
 
-            Matrix expected = new double[,]
+            Matrix expected = new float[,]
             {
-                { 0d, 2d },
-                { 3d, 3d },
+                { 0f, 2f },
+                { 3f, 3f },
             };
 
             // Act

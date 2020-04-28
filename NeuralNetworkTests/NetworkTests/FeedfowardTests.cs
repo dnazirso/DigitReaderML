@@ -11,14 +11,14 @@ namespace NeuralNetworkTests.NetworkTests
         public void FeedowardNominalBehavior()
         {
             // Arrange
-            var inputs = new double[,]
+            var inputs = new float[,]
             {
-                { 0.1d },
-                { 1d },
-                { 1d },
-                { 0.1d }
+                { 0.1f },
+                { 1f },
+                { 1f },
+                { 0.1f }
             };
-            var expectedAns = new double[,]
+            var expectedAns = new float[,]
             {
                 { 0 },
             };
@@ -30,7 +30,7 @@ namespace NeuralNetworkTests.NetworkTests
             var neurons = network.Feedfoward(inputs);
 
             // Assert
-            Assert.True(neurons.Activations[1].mat.Cast<double>().All(a => a != 0));
+            Assert.True(neurons.Activations[1].mat.Cast<float>().All(a => a != 0));
         }
     }
 }

@@ -9,16 +9,16 @@ namespace AlgebraTests.MatrixTests
         public void DotNominalBehavior()
         {
             // Arrange
-            Matrix A = new double[,]
+            Matrix A = new float[,]
             {
-                { 1d, 2d },
-                { 3d, 4d }
+                { 1f, 2f },
+                { 3f, 4f }
             };
 
-            Matrix B = new double[,]
+            Matrix B = new float[,]
             {
-                { 1d, 0d },
-                { 0d, 1d },
+                { 1f, 0f },
+                { 0f, 1f },
             };
 
             // Act
@@ -32,23 +32,23 @@ namespace AlgebraTests.MatrixTests
         public void DotVector()
         {
             // Arrange
-            Matrix A = new double[,]
+            Matrix A = new float[,]
             {
-                { 1d, 2d ,3d },
-                { 4d, 5d ,6d }
+                { 1f, 2f ,3f },
+                { 4f, 5f ,6f }
             };
 
-            Matrix B = new double[,]
+            Matrix B = new float[,]
             {
-                { 1d },
-                { 1d },
-                { 1d }
+                { 1f },
+                { 1f },
+                { 1f }
             };
 
-            Matrix expected = new double[,]
+            Matrix expected = new float[,]
             {
-                { 6d },
-                { 15d }
+                { 6f },
+                { 15f }
             };
 
             // Act
@@ -62,18 +62,18 @@ namespace AlgebraTests.MatrixTests
         public void DotReal()
         {
             // Arrange
-            Matrix A = new double[,]
+            Matrix A = new float[,]
             {
-                { 1d, 2d ,3d },
-                { 4d, 5d ,6d }
+                { 1f, 2f ,3f },
+                { 4f, 5f ,6f }
             };
 
-            double B = 2;
+            float B = 2;
 
-            Matrix expected = new double[,]
+            Matrix expected = new float[,]
             {
-                { 2d, 4d ,6d },
-                { 8d, 10d ,12d }
+                { 2f, 4f ,6f },
+                { 8f, 10f ,12f }
             };
 
             // Act

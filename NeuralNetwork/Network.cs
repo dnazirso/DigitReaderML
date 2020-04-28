@@ -49,7 +49,7 @@ namespace NeuralNetwork
             // Initialize Biases
             foreach (int y in Sizes.Skip(1))
             {
-                double[,] biases = new double[y, 1];
+                float[,] biases = new float[y, 1];
                 for (int i = 0; i < y; i++)
                 {
                     biases[i, 0] = ThreadSafeRandom.NormalRand();
@@ -65,7 +65,7 @@ namespace NeuralNetwork
             {
                 // x => number of neuron in previous layer
                 // y => number of neuron in actual layer
-                double[,] layer = new double[y, x];
+                float[,] layer = new float[y, x];
                 for (int i = 0; i < y; i++)
                 {
                     for (int j = 0; j < x; j++)
@@ -107,7 +107,7 @@ namespace NeuralNetwork
         /// <param name="miniBatchSize">Size of a batch of data</param>
         /// <param name="eta">Learning rate</param>
         /// <param name="TestData">Data that will test the Network accuracy</param>
-        public void StochasticGradientDescent(List<Data> datas, int generations, int miniBatchSize, double eta, List<Data> TestData = null)
+        public void StochasticGradientDescent(List<Data> datas, int generations, int miniBatchSize, float eta, List<Data> TestData = null)
         {
             Console.WriteLine("\nbegining learing using the stochastic gradient descent method");
             Console.WriteLine($"\nbatch size {miniBatchSize}, learning rate {eta}, number of generation {generations}");
@@ -141,12 +141,12 @@ namespace NeuralNetwork
         /// </summary>
         /// <param name="miniBatch">small batch of datas</param>
         /// <param name="eta">leaning rate</param>
-        private void UpdateMiniBatch(List<Data> miniBatch, double eta)
+        private void UpdateMiniBatch(List<Data> miniBatch, float eta)
         {
-            Matrix[] nablaBiases = Biases.Select(b => new Matrix(new double[b.mat.GetLength(0), b.mat.GetLength(1)])).ToArray();
-            Matrix[] nablaWeights = Weights.Select(w => new Matrix(new double[w.mat.GetLength(0), w.mat.GetLength(1)])).ToArray();
+            Matrix[] nablaBiases = Biases.Select(b => new Matrix(new float[b.mat.GetLength(0), b.mat.GetLength(1)])).ToArray();
+            Matrix[] nablaWeights = Weights.Select(w => new Matrix(new float[w.mat.GetLength(0), w.mat.GetLength(1)])).ToArray();
 
-            double K = eta / miniBatch.Count;
+            float K = eta / miniBatch.Count;
 
             for (int n = 0; n < miniBatch.Count; n++)
             {
@@ -174,8 +174,8 @@ namespace NeuralNetwork
         {
             Trace.WriteLine($"Backpropagation on {data.Id}");
 
-            Matrix[] deltaNablaBiases = Biases.Select(b => new Matrix(new double[b.mat.GetLength(0), b.mat.GetLength(1)])).ToArray();
-            Matrix[] deltaNablaWeights = Weights.Select(w => new Matrix(new double[w.mat.GetLength(0), w.mat.GetLength(1)])).ToArray();
+            Matrix[] deltaNablaBiases = new Matrix[NumberOfLayer - 1];
+            Matrix[] deltaNablaWeights = new Matrix[NumberOfLayer - 1];
 
             Neuron neurons = Feedfoward(data.Inputs);
 
@@ -208,18 +208,20 @@ namespace NeuralNetwork
 
                 Neuron neurons = Feedfoward(data.Inputs);
 
-                double[] arrans = neurons.Activations.Last().mat.Cast<double>().ToArray();
-                double maxans = arrans.Max();
+                float[] arrans = neurons.Activations.Last().mat.Cast<float>().ToArray();
+                float maxans = arrans.Max();
                 int maxIndexAns = Array.IndexOf(arrans, maxans);
 
-                double[] arrexp = data.Expected.mat.Cast<double>().ToArray();
-                double maxexp = arrexp.Max();
+                float[] arrexp = data.Expected.mat.Cast<float>().ToArray();
+                float maxexp = arrexp.Max();
                 int maxIndexExp = Array.IndexOf(arrexp, maxexp);
 
                 bool hasSucceded = maxIndexAns == maxIndexExp;
 
+                float totalAns = arrans.Sum();
+
                 suceeded += hasSucceded ? 1 : 0;
-                Trace.WriteLine($"has succeded : {hasSucceded}");
+                Trace.WriteLine($"has succeded : {hasSucceded} {(hasSucceded ? $" {MathF.Truncate(100 * (maxans / totalAns))} % correct" : "")}");
             }
 
             return suceeded;
@@ -234,14 +236,14 @@ namespace NeuralNetwork
         {
             return output - Expected;
         }
-    }
 
-    /// <summary>
-    /// Nabla structure for computation
-    /// </summary>
-    struct DeltaNabla
-    {
-        public Matrix[] Biases;
-        public Matrix[] Weights;
+        /// <summary>
+        /// Nabla structure for computation
+        /// </summary>
+        private struct DeltaNabla
+        {
+            public Matrix[] Biases;
+            public Matrix[] Weights;
+        }
     }
 }

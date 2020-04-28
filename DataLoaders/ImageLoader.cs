@@ -21,7 +21,7 @@ namespace DataLoaders
             string exactPath = Path.GetFullPath(path);
 
             Bitmap img = new Bitmap(exactPath);
-            double[,] Brightnesses = new double[img.Width * img.Height, 1];
+            float[,] Brightnesses = new float[img.Width * img.Height, 1];
 
             int n = 0;
 

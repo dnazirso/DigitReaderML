@@ -9,16 +9,16 @@ namespace AlgebraTests.MatrixTests
         public void TransposeNominalBehavior()
         {
             // Arrange
-            Matrix A = new double[,]
+            Matrix A = new float[,]
             {
-                { 1d, 2d },
-                { 3d, 4d }
+                { 1f, 2f },
+                { 3f, 4f }
             };
 
-            Matrix expected = new double[,]
+            Matrix expected = new float[,]
             {
-                { 1d, 3d },
-                { 2d, 4d }
+                { 1f, 3f },
+                { 2f, 4f }
             };
 
             // Act
@@ -32,15 +32,15 @@ namespace AlgebraTests.MatrixTests
         public void TransposeVector()
         {
             // Arrange
-            Matrix A = new double[,]
+            Matrix A = new float[,]
             {
-                { 1d },
-                { 3d }
+                { 1f },
+                { 3f }
             };
 
-            Matrix expected = new double[,]
+            Matrix expected = new float[,]
             {
-                { 1d, 3d },
+                { 1f, 3f },
             };
 
             // Act

@@ -9,7 +9,7 @@ namespace NeuralNetworkTests.NeuronTests
         public void SigmoidNominalBehavior()
         {
             // Arrange
-            var z = 0d;
+            var z = 0f;
 
             // Act
             var neuron = Neuron.Sigmoid(z);

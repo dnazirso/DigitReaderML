@@ -22,8 +22,8 @@ namespace NeuralNetwork
         /// Sigmoid function
         /// </summary>
         /// <param name="z">data result of previous neuron layer</param>
-        /// <returns>a double</returns>
-        public static double Sigmoid(double z) => 1.0f / (1.0f + Math.Exp(-z));
+        /// <returns>a float</returns>
+        public static float Sigmoid(float z) => 1.0f / (1.0f + MathF.Exp(-z));
 
         /// <summary>
         /// Sigmoid function
@@ -35,7 +35,7 @@ namespace NeuralNetwork
             int maxi = Z.mat.GetLength(0);
             int maxj = Z.mat.GetLength(1);
 
-            double[,] A = new double[maxi, maxj];
+            float[,] A = new float[maxi, maxj];
 
             for (int i = 0; i < maxi; i++)
             {
@@ -52,8 +52,8 @@ namespace NeuralNetwork
         /// Derivative of a sigmoid function
         /// </summary>
         /// <param name="z">data result of previous neuron layer</param>
-        /// <returns>a double</returns>
-        public static double SigmoidPrime(double z) => Sigmoid(z) * (1 - Sigmoid(z));
+        /// <returns>a float</returns>
+        public static float SigmoidPrime(float z) => Sigmoid(z) * (1 - Sigmoid(z));
 
         /// <summary>
         /// Derivative of a sigmoid function
@@ -65,7 +65,7 @@ namespace NeuralNetwork
             int maxi = Z.mat.GetLength(0);
             int maxj = Z.mat.GetLength(1);
 
-            double[,] A = new double[maxi, maxj];
+            float[,] A = new float[maxi, maxj];
 
             for (int i = 0; i < maxi; i++)
             {

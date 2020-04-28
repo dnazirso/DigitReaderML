@@ -27,17 +27,17 @@ namespace Algebra
         }
 
         /// <summary>
-        /// Creates a Random double under the normal distribution probability law (Laplace–Gauss)
+        /// Creates a Random float under the normal distribution probability law (Laplace–Gauss)
         /// </summary>
         /// <param name="mean">mean of the Gaussian curve (generaly 0)</param>
         /// <param name="scale">scale parameter of the normal distribution (generaly x²=1)</param>
-        /// <returns>a normal random double</returns>
-        public static double NormalRand(int mean = 0, int scale = 1)
+        /// <returns>a normal random float</returns>
+        public static float NormalRand(int mean = 0, int scale = 1)
         {
-            double random1 = 1.0 - ThisThreadsRandom.NextDouble();
-            double random2 = 1.0 - ThisThreadsRandom.NextDouble();
+            float random1 = 1.0f - (float)ThisThreadsRandom.NextDouble();
+            float random2 = 1.0f - (float)ThisThreadsRandom.NextDouble();
             
-            return mean + scale * Math.Sqrt(-2.0 * Math.Log(random1)) * Math.Sin(2.0 * Math.PI * random2);
+            return mean + scale * MathF.Sqrt(-2.0f * MathF.Log(random1)) * MathF.Sin(2.0f * MathF.PI * random2);
         }
 
     }
