@@ -109,7 +109,8 @@ namespace NeuralNetwork
         /// <param name="TestData">Data that will test the Network accuracy</param>
         public void StochasticGradientDescent(List<Data> datas, int generations, int miniBatchSize, double eta, List<Data> TestData = null)
         {
-            Console.WriteLine("begining learing using the stochastic gradient descent method");
+            Console.WriteLine("\nbegining learing using the stochastic gradient descent method");
+            Console.WriteLine($"\nbatch size {miniBatchSize}, learning rate {eta}, number of generation {generations}");
 
             for (int j = 0; j < generations; j++)
             {
