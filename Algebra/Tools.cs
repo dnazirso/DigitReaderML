@@ -72,7 +72,7 @@ namespace Algebra
         /// <param name="source">Source list</param>
         /// <param name="chunkSize">Chunk size</param>
         /// <returns></returns>
-        public static List<List<T>> ChunkBy<T>(this List<T> source, int chunkSize)
+        public static List<List<T>> ChunkBy<T>(this IList<T> source, int chunkSize)
         {
             return source
                 .Select((x, i) => new { Index = i, Value = x })
