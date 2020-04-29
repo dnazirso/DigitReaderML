@@ -32,11 +32,11 @@ namespace Algebra
         /// <param name="mean">mean of the Gaussian curve (generaly 0)</param>
         /// <param name="scale">scale parameter of the normal distribution (generaly x²=1)</param>
         /// <returns>a normal random float</returns>
-        public static float NormalRand(int mean = 0, int scale = 1)
+        public static float NormalRand(float mean = 0, float scale = 1)
         {
             float random1 = 1.0f - (float)ThisThreadsRandom.NextDouble();
             float random2 = 1.0f - (float)ThisThreadsRandom.NextDouble();
-            
+
             return mean + scale * MathF.Sqrt(-2.0f * MathF.Log(random1)) * MathF.Sin(2.0f * MathF.PI * random2);
         }
 
