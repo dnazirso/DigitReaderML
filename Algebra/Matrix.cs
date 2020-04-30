@@ -106,6 +106,39 @@ namespace Algebra
         public static bool operator !=(Matrix A, Matrix B) => !A.Equals(B);
 
         /// <summary>
+        /// <see cref="Matrix"/> Hadamar product
+        /// Note : A and B has to be of the same dimensions
+        /// </summary>
+        /// <param name="A"><see cref="Matrix"/> A</param>
+        /// <param name="B"><see cref="Matrix"/> B</param>
+        /// <returns>a <see cref="Matrix"/> of same dimension than A and B</returns>
+        public static Matrix operator %(Matrix A, Matrix B)
+        {
+            int dimAi = A.mat.GetLength(0);
+            int dimAj = A.mat.GetLength(1);
+
+            int dimBi = B.mat.GetLength(0);
+            int dimBj = B.mat.GetLength(1);
+
+            if (dimAi != dimBi || dimAj != dimBj)
+            {
+                throw new DifferentSizesException("A and B has to be of the same dimensions");
+            }
+
+            float[,] C = new float[dimAi, dimAj];
+
+            for (int i = 0; i < dimAi; i++)
+            {
+                for (int j = 0; j < dimAj; j++)
+                {
+                    C[i, j] = A.mat[i, j] * B.mat[i, j];
+                }
+            }
+
+            return new Matrix(C);
+        }
+
+        /// <summary>
         /// <see cref="Matrix"/> mutiplication
         /// Note : A width must be of the same length than B height
         /// </summary>
@@ -188,7 +221,7 @@ namespace Algebra
         /// </summary>
         /// <param name="A"><see cref="Matrix"/> A</param>
         /// <param name="B"><see cref="Matrix"/> B</param>
-        /// <returns>a <see cref="Matrix"/> of same dimension</returns>
+        /// <returns>a <see cref="Matrix"/> of same dimension than A nad B</returns>
         public static Matrix operator +(Matrix A, Matrix B)
         {
             int dimAi = A.mat.GetLength(0);
@@ -196,7 +229,6 @@ namespace Algebra
 
             int dimBi = A.mat.GetLength(0);
             int dimBj = A.mat.GetLength(1);
-
 
             if (dimAi != dimBi || dimAj != dimBj)
             {
@@ -230,6 +262,11 @@ namespace Algebra
 
             int dimBi = A.mat.GetLength(0);
             int dimBj = A.mat.GetLength(1);
+
+            if (dimAi != dimBi || dimAj != dimBj)
+            {
+                throw new DifferentSizesException("A and B has to be of the same dimensions");
+            }
 
             float[,] C = new float[dimAi, dimAj];
 
