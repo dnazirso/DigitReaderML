@@ -227,8 +227,8 @@ namespace Algebra
             int dimAi = A.mat.GetLength(0);
             int dimAj = A.mat.GetLength(1);
 
-            int dimBi = A.mat.GetLength(0);
-            int dimBj = A.mat.GetLength(1);
+            int dimBi = B.mat.GetLength(0);
+            int dimBj = B.mat.GetLength(1);
 
             if (dimAi != dimBi || dimAj != dimBj)
             {
@@ -260,8 +260,8 @@ namespace Algebra
             int dimAi = A.mat.GetLength(0);
             int dimAj = A.mat.GetLength(1);
 
-            int dimBi = A.mat.GetLength(0);
-            int dimBj = A.mat.GetLength(1);
+            int dimBi = B.mat.GetLength(0);
+            int dimBj = B.mat.GetLength(1);
 
             if (dimAi != dimBi || dimAj != dimBj)
             {
@@ -279,6 +279,79 @@ namespace Algebra
             }
 
             return new Matrix(C);
+        }
+
+        /// <summary>
+        /// <see cref="Matrix"/> addition
+        /// Note : A and B has to be of the same dimensions
+        /// </summary>
+        /// <param name="A">a is a number representing the 1 <see cref="Matrix"/></param>
+        /// <param name="B"><see cref="Matrix"/> B</param>
+        /// <returns>a <see cref="Matrix"/> of same dimension than A nad B</returns>
+        public static Matrix operator +(float a, Matrix B)
+        {
+            int dimBi = B.mat.GetLength(0);
+            int dimBj = B.mat.GetLength(1);
+
+            float[,] A = new float[dimBi, dimBj];
+
+            for (int i = 0; i < dimBi; i++)
+            {
+                for (int j = 0; j < dimBj; j++)
+                {
+                    A[i, j] = a;
+                }
+            }
+
+            return A + B;
+        }
+
+        /// <summary>
+        /// <see cref="Matrix"/> addition
+        /// Note : A and B has to be of the same dimensions
+        /// </summary>
+        /// <param name="A">a is a number representing the Identity <see cref="Matrix"/></param>
+        /// <param name="B"><see cref="Matrix"/> B</param>
+        /// <returns>a <see cref="Matrix"/> of same dimension than A nad B</returns>
+        public static Matrix operator +(Matrix B, float a)
+        {
+            return a + B;
+        }
+        /// <summary>
+        /// <see cref="Matrix"/> addition
+        /// Note : A and B has to be of the same dimensions
+        /// </summary>
+        /// <param name="A">a is a number representing the 1 <see cref="Matrix"/></param>
+        /// <param name="B"><see cref="Matrix"/> B</param>
+        /// <returns>a <see cref="Matrix"/> of same dimension than A nad B</returns>
+        public static Matrix operator -(float a, Matrix B)
+        {
+            int dimBi = B.mat.GetLength(0);
+            int dimBj = B.mat.GetLength(1);
+
+            float[,] A = new float[dimBi, dimBj];
+
+            for (int i = 0; i < dimBi; i++)
+            {
+                for (int j = 0; j < dimBj; j++)
+                {
+                    A[i, j] = a;
+                }
+            }
+
+            return A - B;
+        }
+
+        /// <summary>
+        /// <see cref="Matrix"/> addition
+        /// Note : A and B has to be of the same dimensions
+        /// </summary>
+        /// <param name="A">a is a number representing the Identity <see cref="Matrix"/></param>
+        /// <param name="B"><see cref="Matrix"/> B</param>
+        /// <returns>a <see cref="Matrix"/> of same dimension than A nad B</returns>
+        public static Matrix operator -(Matrix B, float a)
+        {
+            return a - B;
         }
     }
 }
