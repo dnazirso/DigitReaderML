@@ -179,14 +179,14 @@ namespace NeuralNetwork
 
             Neuron neurons = Feedfoward(data.Inputs);
 
-            Matrix delta = CostDerivative(neurons.Activations[^1], data.Expected) * Neuron.SigmoidPrime(neurons.Zmatrices[^1]);
+            Matrix delta = CostDerivative(neurons.Activations[^1], data.Expected) % Neuron.SigmoidPrime(neurons.Zmatrices[^1]);
 
             deltaNablaBiases[^1] = delta;
             deltaNablaWeights[^1] = delta * neurons.Activations[^2].Transpose();
 
             for (int l = NumberOfLayer - 2; l > 0; l--)
             {
-                delta = (Weights[l].Transpose() * delta) * Neuron.SigmoidPrime(neurons.Zmatrices[l - 1]);
+                delta = (Weights[l].Transpose() * delta) % Neuron.SigmoidPrime(neurons.Zmatrices[l - 1]);
                 deltaNablaBiases[l - 1] = delta;
                 deltaNablaWeights[l - 1] = delta * neurons.Activations[l - 1].Transpose();
             }

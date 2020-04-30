@@ -106,7 +106,7 @@ namespace Algebra
         public static bool operator !=(Matrix A, Matrix B) => !A.Equals(B);
 
         /// <summary>
-        /// <see cref="Matrix"/> Hadamar product
+        /// <see cref="Matrix"/> Hadamard product
         /// Note : A and B has to be of the same dimensions
         /// </summary>
         /// <param name="A"><see cref="Matrix"/> A</param>

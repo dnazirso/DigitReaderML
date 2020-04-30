@@ -75,7 +75,7 @@ namespace NeuralNetwork
                 }
             }
 
-            return A;
+            return Sigmoid(Z) % (1 - Sigmoid(Z));
         }
     }
 }
