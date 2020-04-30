@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Algebra.Exceptions;
+using System.Linq;
 
 namespace Algebra
 {
@@ -119,13 +120,16 @@ namespace Algebra
             int dimBi = B.mat.GetLength(0);
             int dimBj = B.mat.GetLength(1);
 
-            int dimCn = dimAj > dimBi ? dimBi : dimAj;
+            if (dimAj != dimBi)
+            {
+                throw new DifferentSizesException("A width must be of the same length than B height");
+            }
 
             float[,] C = new float[dimAi, dimBj];
 
             float ComputeC(int i, int j, float cij = 0)
             {
-                for (int n = 0; n < dimCn; n++)
+                for (int n = 0; n < dimAj; n++)
                 {
                     cij += A.mat[i, n] * B.mat[n, j];
                 }
@@ -187,14 +191,23 @@ namespace Algebra
         /// <returns>a <see cref="Matrix"/> of same dimension</returns>
         public static Matrix operator +(Matrix A, Matrix B)
         {
-            int dimi = A.mat.GetLength(0);
-            int dimj = A.mat.GetLength(1);
+            int dimAi = A.mat.GetLength(0);
+            int dimAj = A.mat.GetLength(1);
 
-            float[,] C = new float[dimi, dimj];
+            int dimBi = A.mat.GetLength(0);
+            int dimBj = A.mat.GetLength(1);
 
-            for (int i = 0; i < dimi; i++)
+
+            if (dimAi != dimBi || dimAj != dimBj)
             {
-                for (int j = 0; j < dimj; j++)
+                throw new DifferentSizesException("A and B has to be of the same dimensions");
+            }
+
+            float[,] C = new float[dimAi, dimAj];
+
+            for (int i = 0; i < dimAi; i++)
+            {
+                for (int j = 0; j < dimAj; j++)
                 {
                     C[i, j] = A.mat[i, j] + B.mat[i, j];
                 }
@@ -212,14 +225,17 @@ namespace Algebra
         /// <returns>a <see cref="Matrix"/> of same dimension</returns>
         public static Matrix operator -(Matrix A, Matrix B)
         {
-            int dimi = A.mat.GetLength(0);
-            int dimj = A.mat.GetLength(1);
+            int dimAi = A.mat.GetLength(0);
+            int dimAj = A.mat.GetLength(1);
 
-            float[,] C = new float[dimi, dimj];
+            int dimBi = A.mat.GetLength(0);
+            int dimBj = A.mat.GetLength(1);
 
-            for (int i = 0; i < dimi; i++)
+            float[,] C = new float[dimAi, dimAj];
+
+            for (int i = 0; i < dimAi; i++)
             {
-                for (int j = 0; j < dimj; j++)
+                for (int j = 0; j < dimAj; j++)
                 {
                     C[i, j] = A.mat[i, j] - B.mat[i, j];
                 }
