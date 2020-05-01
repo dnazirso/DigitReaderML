@@ -24,7 +24,7 @@ namespace NeuralNetwork
         /// <summary>
         /// Number of layers
         /// </summary>
-        public int NumberOfLayer { get; set; }
+        public int NumberOfLayer { get; private set; }
 
         /// <summary>
         /// Neural network constructor for custom purpose
@@ -44,24 +44,20 @@ namespace NeuralNetwork
             NumberOfLayer = Sizes.Count;
             Biases = new Matrix[Sizes.Count - 1];
             Weights = new Matrix[Sizes.Count - 1];
-            int n = 0;
 
             // Initialize Biases
-            foreach (int y in Sizes.Skip(1))
+            foreach ((int y, int l) in Sizes.Skip(1).Select((v, i) => (v, i)))
             {
                 float[,] biases = new float[y, 1];
                 for (int i = 0; i < y; i++)
                 {
                     biases[i, 0] = ThreadSafeRandom.NormalRand();
                 }
-                Biases[n] = biases;
-                n++;
+                Biases[l] = biases;
             }
 
-            n = 0;
-
             // Initialize Weights
-            foreach ((int x, int y) in Sizes.SkipLast(1).Zip(Sizes.Skip(1)))
+            foreach (((int x, int y), int l) in Sizes.SkipLast(1).Zip(Sizes.Skip(1)).Select((v, i) => (v, i)))
             {
                 // x => number of neuron in previous layer
                 // y => number of neuron in actual layer
@@ -73,8 +69,7 @@ namespace NeuralNetwork
                         layer[i, j] = ThreadSafeRandom.NormalRand();
                     }
                 }
-                Weights[n] = layer;
-                n++;
+                Weights[l] = layer;
             }
         }
 

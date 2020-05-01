@@ -60,22 +60,6 @@ namespace NeuralNetwork
         /// </summary>
         /// <param name="Z">data result of previous neuron layer</param>
         /// <returns>a <see cref="Matrix"/></returns>
-        public static Matrix SigmoidPrime(Matrix Z)
-        {
-            int maxi = Z.mat.GetLength(0);
-            int maxj = Z.mat.GetLength(1);
-
-            float[,] A = new float[maxi, maxj];
-
-            for (int i = 0; i < maxi; i++)
-            {
-                for (int j = 0; j < maxj; j++)
-                {
-                    A[i, j] = SigmoidPrime(Z.mat[i, j]);
-                }
-            }
-
-            return Sigmoid(Z) % (1 - Sigmoid(Z));
-        }
+        public static Matrix SigmoidPrime(Matrix Z) => Sigmoid(Z) % (1 - Sigmoid(Z));
     }
 }
