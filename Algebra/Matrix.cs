@@ -317,6 +317,7 @@ namespace Algebra
         {
             return a + B;
         }
+
         /// <summary>
         /// <see cref="Matrix"/> addition
         /// Note : A and B has to be of the same dimensions
