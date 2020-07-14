@@ -10,20 +10,20 @@ namespace NeuralNetworkTests.NetworkTests
         public void NetworkHasCorrectNumberOfLayer()
         {
             // Arrange
-            var sizes = new List<int> { 3, 2, 1 };
+            var sizes = new int[] { 3, 2, 1 };
 
             // Act
             var network = new Network(sizes);
 
             // Assert
-            Assert.Equal(sizes.Count, network.NumberOfLayer);
+            Assert.Equal(sizes.Length, network.NumberOfLayer);
         }
 
         [Fact]
         public void NetworkHasNonEmptyBiasesVectors()
         {
             // Arrange
-            var sizes = new List<int> { 3, 2, 1 };
+            var sizes = new int[] { 3, 2, 1 };
 
             // Act
             var network = new Network(sizes);
@@ -36,7 +36,7 @@ namespace NeuralNetworkTests.NetworkTests
         public void NetworkHasNonEmptyWeightMatrises()
         {
             // Arrange
-            var sizes = new List<int> { 3, 2, 1 };
+            var sizes = new int[] { 3, 2, 1 };
 
             // Act
             var network = new Network(sizes);

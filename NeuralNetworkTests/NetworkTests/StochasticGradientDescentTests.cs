@@ -15,7 +15,7 @@ namespace NeuralNetworkTests.NetworkTests
             List<Data> testingDatas = new List<Data>();
             List<Data> trainingDatas = new List<Data>();
 
-            Network network = new Network(new List<int> { 784, 16, 16, 10 });
+            Network network = new Network(new int[] { 784, 16, 16, 10 });
 
             using (IDataLoader loader = new ImageLoader())
             {

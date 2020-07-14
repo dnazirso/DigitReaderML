@@ -23,7 +23,7 @@ namespace NeuralNetworkTests.NetworkTests
                 { 0 },
             };
             var data = new Data { Inputs = inputs, Expected = expectedAns, Id = "test" };
-            var size = new List<int> { inputs.GetLength(0), 8, 8, 1 };
+            var size = new int[] { inputs.GetLength(0), 8, 8, 1 };
             Network network = new Network(size);
 
             // Act

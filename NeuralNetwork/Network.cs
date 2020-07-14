@@ -1,7 +1,9 @@
 ﻿using Algebra;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace NeuralNetwork
@@ -27,10 +29,15 @@ namespace NeuralNetwork
         public int NumberOfLayer { get; private set; }
 
         /// <summary>
+        /// Sizes of each layers
+        /// </summary>
+        private int[] Sizes { get; set; }
+
+        /// <summary>
         /// Neural network constructor for custom purpose
         /// </summary>
         /// <param name="Sizes">List number of neuron per layer</param>
-        public Network(List<int> Sizes)
+        public Network(int[] Sizes)
         {
             InitializeNetwork(Sizes);
         }
@@ -39,11 +46,12 @@ namespace NeuralNetwork
         /// Initialize a <see cref="Network"/> from a given size
         /// </summary>
         /// <param name="Sizes"></param>
-        private void InitializeNetwork(List<int> Sizes)
+        private void InitializeNetwork(int[] Sizes)
         {
-            NumberOfLayer = Sizes.Count;
-            Biases = new Matrix[Sizes.Count - 1];
-            Weights = new Matrix[Sizes.Count - 1];
+            this.Sizes = Sizes.ToArray();
+            NumberOfLayer = Sizes.Length;
+            Biases = new Matrix[Sizes.Length - 1];
+            Weights = new Matrix[Sizes.Length - 1];
 
             // Initialize Biases
             foreach ((int y, int l) in Sizes.Skip(1).Select((v, i) => (v, i)))
@@ -70,6 +78,39 @@ namespace NeuralNetwork
                     }
                 }
                 Weights[l] = layer;
+            }
+        }
+
+        public void Load(string file)
+        {
+            string json = File.ReadAllText(file);
+            NetworkMemory memory = JsonConvert.DeserializeObject<NetworkMemory>(json);
+
+            Sizes = memory.Sizes;
+            NumberOfLayer = memory.Sizes.Length;
+            Biases = memory.Biases.Select(b => new Matrix(b)).ToArray();
+            Weights = memory.Weights.Select(w => new Matrix(w)).ToArray();
+        }
+
+        /// <summary>
+        /// Save wieghts and biases within a file
+        /// </summary>
+        /// <param name="file">path to the file</param>
+        public void Save(string file)
+        {
+            NetworkMemory memory = new NetworkMemory
+            {
+                Biases = Biases.Select(b => b.mat).ToArray(),
+                Weights = Weights.Select(b => b.mat).ToArray(),
+                Sizes = Sizes
+            };
+
+            JsonSerializer serializer = new JsonSerializer();
+
+            using (StreamWriter sw = new StreamWriter(file))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, memory);
             }
         }
 

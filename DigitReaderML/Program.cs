@@ -15,7 +15,7 @@ namespace DigitReaderML
             List<Data> testingDatas;
             List<Data> trainingDatas;
 
-            Network network = new Network(new List<int> { 784, 30, 10 });
+            Network network = new Network(new int[] { 784, 30, 10 });
 
             using (IDataLoader loader = new ImageLoader())
             {
