@@ -5,5 +5,5 @@ Handwritten digits reader inpired by [Michael Nielsen](http://michaelnielsen.org
 All matrises computation and other calculations are **exempt from external libraries**
 
 ## Work In Progress
- - Store weight and biase matrises after learning
- - Read previously stored matrises 
+ - Store weight and biase matrises ina file after learning
+ - Read files of previously stored matrises 
